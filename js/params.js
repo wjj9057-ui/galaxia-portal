@@ -1,27 +1,29 @@
 // params.js — 参数面板(lil-gui)+ localStorage 持久化
 import GUI from '../vendor/lil-gui.esm.js';
 
-const STORAGE_KEY = 'galaxia:settings:v1';
+// v2:2026-07-24 设计师定稿基准参数上线,升版本号让所有老访客的旧存档失效、统一吃到新默认值
+const STORAGE_KEY = 'galaxia:settings:v2';
 
+// 2026-07-24 设计师定稿视觉基准(卷人工调校),改动任何一项须卷拍板
 export const DEFAULT_PARAMS = {
   // 银河
-  nebulaDensity: 0.85,      // 星云密度
+  nebulaDensity: 0.57,      // 星云密度
   nebulaHue: 0,             // 星云色相偏移(度)
   starCount: 8000,          // 星点数量
-  // 后处理(点彩靠密度发亮,Bloom 大降防"玻璃感";grain 颗粒保留加分)
-  bloomStrength: 0.3,
-  bloomRadius: 0.4,
-  bloomThreshold: 0.85,
+  // 后处理(定稿基准:Bloom 中低阈值+中强度服务整体氛围;grain 颗粒保留加分)
+  bloomStrength: 1.06,
+  bloomRadius: 0.55,
+  bloomThreshold: 0.32,
   vignette: 0.55,           // 暗角强度
   grain: 0.05,              // 颗粒强度
   aberration: 0.0016,       // 色散强度
-  exposure: 1.3,            // 曝光(点彩哑光纹理过 ACES 会被压暗,提曝光补偿)
+  exposure: 1,              // 曝光(定稿:Bloom 提亮后不再需要额外曝光补偿)
   // 运动
-  cruiseSpeed: 1.0,         // 巡航速度倍率
-  rotationSpeed: 1.0,       // 星球自转速度倍率
+  cruiseSpeed: 1.65,        // 巡航速度倍率
+  rotationSpeed: 2.35,      // 星球自转速度倍率
   // 星球
-  atmosphereIntensity: 1.0, // 星系亮度倍率(body ×2.0 / halo ×1.3 在此基础上)
-  linkOpacity: 0.15,        // 连线透明度
+  atmosphereIntensity: 2.4, // 星系亮度倍率(body ×2.0 / halo ×1.3 在此基础上)
+  linkOpacity: 0.27,        // 连线透明度
   // 音频
   volume: 0.5,
 };
