@@ -136,7 +136,7 @@ export function createInterior(renderer, camera) {
 
       // ---------- ① 致密亮心:四芒星的心脏(亮度较 v3 回落,避免糊成白饼) ----------
       {
-        const N = 2200;
+        const N = 1500;
         const pos = new Float32Array(N * 3);
         const col = new Float32Array(N * 3);
         const sigma = spreadR * 0.1;
@@ -148,11 +148,12 @@ export function createInterior(renderer, camera) {
           pos[i * 3] = x; pos[i * 3 + 1] = y; pos[i * 3 + 2] = z;
           const rr = Math.sqrt(x * x + y * y + z * z);
           const t = Math.min(1, rr / (sigma * 2.1));
+          // 四芒星是氛围不是主体:亮度大幅低于五域小星系
           const c = armColor(t * 0.8, rand);
-          const b = (1 - t * 0.7) * (0.38 + rand() * 0.34);
+          const b = (1 - t * 0.7) * (0.2 + rand() * 0.18);
           col[i * 3] = c.r * b; col[i * 3 + 1] = c.g * b; col[i * 3 + 2] = c.b * b;
         }
-        ringGroup.add(makePoints(pos, col, 1.7));
+        ringGroup.add(makePoints(pos, col, 1.5));
       }
 
       // ---------- ② 梭形横盘:近心厚而亮,向盘缘收细消散(侧看即横向星芒) ----------
@@ -171,7 +172,7 @@ export function createInterior(renderer, camera) {
           pos[i * 3 + 1] = y;
           pos[i * 3 + 2] = Math.sin(a) * rr;
           const c = armColor(t, rand);
-          const b = Math.pow(1 - t, 1.7) * (0.34 + rand() * 0.4) + 0.03;
+          const b = Math.pow(1 - t, 1.7) * (0.18 + rand() * 0.22) + 0.02;
           col[i * 3] = c.r * b; col[i * 3 + 1] = c.g * b; col[i * 3 + 2] = c.b * b;
         }
         ringGroup.add(makePoints(pos, col, 1.35));
@@ -192,7 +193,7 @@ export function createInterior(renderer, camera) {
           pos[i * 3 + 1] = yy;
           pos[i * 3 + 2] = ((rand() + rand() - 1)) * thick;
           const c = armColor(t, rand);
-          const b = Math.pow(1 - t, 2.0) * (0.42 + rand() * 0.46) + 0.02;
+          const b = Math.pow(1 - t, 2.0) * (0.22 + rand() * 0.25) + 0.015;
           col[i * 3] = c.r * b; col[i * 3 + 1] = c.g * b; col[i * 3 + 2] = c.b * b;
         }
         ringGroup.add(makePoints(pos, col, 1.45));
@@ -220,7 +221,7 @@ export function createInterior(renderer, camera) {
             pos[i * 3 + 1] = yy;
             pos[i * 3 + 2] = ((rand() + rand() - 1)) * jit;
           }
-          const b = 0.65 + rand() * 0.4;
+          const b = 0.42 + rand() * 0.26;
           const c = rand() < 0.7 ? GOLD : WARM;
           col[i * 3] = c.r * b; col[i * 3 + 1] = c.g * b; col[i * 3 + 2] = c.b * b;
         }
