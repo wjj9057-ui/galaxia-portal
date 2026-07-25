@@ -97,7 +97,7 @@ html, body {
   display: block;
   margin-top: 7px;
   font-family: var(--serif);
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 400;
   color: var(--hud-dim);
   text-align: justify;
@@ -187,9 +187,10 @@ html, body {
 .hud-btn.on { border-color: var(--accent); color: var(--accent); }
 
 /* ============ 视角预设 ============ */
+/* 视角导航:移至左下角(快捷键提示上方) */
 #view-presets {
   position: fixed;
-  top: 62px;
+  bottom: 150px;
   left: 18px;
   display: flex;
   flex-direction: column;
@@ -516,7 +517,7 @@ html, body {
   margin-bottom: 22px;
 }
 .loading-logo .logo-en { font-size: 26px; }
-.loading-logo .logo-cn { font-size: 13px; }
+.loading-logo .logo-cn { font-size: 16px; }
 .loading-bar {
   width: 220px;
   height: 2px;
@@ -811,7 +812,7 @@ body.hud-hidden #year-nav { display: none !important; }
   .hud-center { order: 3; width: 100%; max-width: none; }
   .search-box { max-width: none; }
   .logo { font-size: 17px; }
-  #view-presets { top: auto; bottom: 16px; left: 12px; flex-direction: row; flex-wrap: wrap; }
+  #view-presets { bottom: 16px; left: 12px; flex-direction: row; flex-wrap: wrap; }
   #shortcuts { display: none; }
   #params-panel { top: auto; bottom: 12px; right: 8px; max-height: 55vh; }
   #detail-layer { padding: 120px 4vw 20px; align-items: flex-end; }

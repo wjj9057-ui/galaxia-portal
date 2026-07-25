@@ -161,10 +161,10 @@ export function createInterior(renderer, camera) {
 
       // ---------- ① 致密亮心:四芒星的心脏(亮度较 v3 回落,避免糊成白饼) ----------
       {
-        const N = 1500;
+        const N = 1000;
         const pos = new Float32Array(N * 3);
         const col = new Float32Array(N * 3);
-        const sigma = spreadR * 0.1;
+        const sigma = spreadR * 0.09;
         for (let i = 0; i < N; i++) {
           const gx = (rand() + rand() + rand() + rand() - 2) / 2;
           const gy = (rand() + rand() + rand() + rand() - 2) / 2;
@@ -173,12 +173,12 @@ export function createInterior(renderer, camera) {
           pos[i * 3] = x; pos[i * 3 + 1] = y; pos[i * 3 + 2] = z;
           const rr = Math.sqrt(x * x + y * y + z * z);
           const t = Math.min(1, rr / (sigma * 2.1));
-          // 四芒星是氛围不是主体:亮度大幅低于五域小星系
+          // 亮心单独弱化(中间的发光体不抢戏),芒的粒子保持清晰亮度
           const c = armColor(t * 0.8, rand);
-          const b = (1 - t * 0.7) * (0.1 + rand() * 0.09);
+          const b = (1 - t * 0.7) * (0.09 + rand() * 0.08);
           col[i * 3] = c.r * b; col[i * 3 + 1] = c.g * b; col[i * 3 + 2] = c.b * b;
         }
-        addConvergeCloud(pos, col, 1.5);
+        addConvergeCloud(pos, col, 1.4);
       }
 
       // ---------- ② 梭形横盘:近心厚而亮,向盘缘收细消散(侧看即横向星芒) ----------
@@ -197,7 +197,7 @@ export function createInterior(renderer, camera) {
           pos[i * 3 + 1] = y;
           pos[i * 3 + 2] = Math.sin(a) * rr;
           const c = armColor(t, rand);
-          const b = Math.pow(1 - t, 1.7) * (0.09 + rand() * 0.11) + 0.01;
+          const b = Math.pow(1 - t, 1.7) * (0.18 + rand() * 0.22) + 0.02;
           col[i * 3] = c.r * b; col[i * 3 + 1] = c.g * b; col[i * 3 + 2] = c.b * b;
         }
         addConvergeCloud(pos, col, 1.35);
@@ -218,7 +218,7 @@ export function createInterior(renderer, camera) {
           pos[i * 3 + 1] = yy;
           pos[i * 3 + 2] = ((rand() + rand() - 1)) * thick;
           const c = armColor(t, rand);
-          const b = Math.pow(1 - t, 2.0) * (0.11 + rand() * 0.13) + 0.008;
+          const b = Math.pow(1 - t, 2.0) * (0.22 + rand() * 0.25) + 0.015;
           col[i * 3] = c.r * b; col[i * 3 + 1] = c.g * b; col[i * 3 + 2] = c.b * b;
         }
         addConvergeCloud(pos, col, 1.45);
@@ -246,7 +246,7 @@ export function createInterior(renderer, camera) {
             pos[i * 3 + 1] = yy;
             pos[i * 3 + 2] = ((rand() + rand() - 1)) * jit;
           }
-          const b = 0.21 + rand() * 0.13;
+          const b = 0.42 + rand() * 0.26;
           const c = rand() < 0.7 ? GOLD : WARM;
           col[i * 3] = c.r * b; col[i * 3 + 1] = c.g * b; col[i * 3 + 2] = c.b * b;
         }
@@ -286,16 +286,16 @@ export function createInterior(renderer, camera) {
           sp.scale.set(haloSize, haloSize, 1);
           return sp;
         }
-        // 亮度压到一级页"飞近星球"档以下再降两成(body 0.8 / halo 0.6),二级页整体走暗调
-        const bodySp = layerSprite(layers.body, 0.8);
-        const haloSp = layerSprite(layers.halo, 0.6);
+        // 亮度压到一级页"飞近星球"档以下(body 1.0 / halo 0.75),行星是二级页主体
+        const bodySp = layerSprite(layers.body, 1.0);
+        const haloSp = layerSprite(layers.halo, 0.75);
         g.add(bodySp, haloSp);
 
         // 小发光核:主色向暖白混 45%,亮度压到一级页呼吸档均值,阈值 0.32 下与一级页同款泛光
         const miniGlow = new THREE.Color(main[0] / 255, main[1] / 255, main[2] / 255)
           .lerp(new THREE.Color(1, 243 / 255, 224 / 255), 0.45);
         const core = createGlowSphere(miniGlow, R * 0.1);
-        core.material.uniforms.uMul.value = 0.55;
+        core.material.uniforms.uMul.value = 0.68;
         g.add(core);
 
         const proxy = new THREE.Mesh(
