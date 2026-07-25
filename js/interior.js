@@ -153,7 +153,7 @@ export function createInterior(renderer, camera) {
           const t = Math.min(1, rr / (sigma * 2.1));
           // 亮心单独弱化(中间的发光体不抢戏),芒的粒子保持清晰亮度
           const c = armColor(t * 0.8, rand);
-          const b = (1 - t * 0.7) * (0.09 + rand() * 0.08);
+          const b = (1 - t * 0.7) * (0.06 + rand() * 0.06);
           col[i * 3] = c.r * b; col[i * 3 + 1] = c.g * b; col[i * 3 + 2] = c.b * b;
         }
         ringGroup.add(makePoints(pos, col, 1.4));
@@ -175,7 +175,8 @@ export function createInterior(renderer, camera) {
           pos[i * 3 + 1] = y;
           pos[i * 3 + 2] = Math.sin(a) * rr;
           const c = armColor(t, rand);
-          const b = Math.pow(1 - t, 1.7) * (0.18 + rand() * 0.22) + 0.02;
+          // 最内 12% 亮度渐进归零:防止上千粒子在中心像素叠加成过曝白球(中心亮度的真正来源)
+          const b = (Math.pow(1 - t, 1.7) * (0.18 + rand() * 0.22) + 0.02) * Math.min(1, t / 0.12);
           col[i * 3] = c.r * b; col[i * 3 + 1] = c.g * b; col[i * 3 + 2] = c.b * b;
         }
         ringGroup.add(makePoints(pos, col, 1.35));
@@ -196,7 +197,8 @@ export function createInterior(renderer, camera) {
           pos[i * 3 + 1] = yy;
           pos[i * 3 + 2] = ((rand() + rand() - 1)) * thick;
           const c = armColor(t, rand);
-          const b = Math.pow(1 - t, 2.0) * (0.22 + rand() * 0.25) + 0.015;
+          // 同横盘:最内 10% 渐进归零,纵芒不在中心堆亮
+          const b = (Math.pow(1 - t, 2.0) * (0.22 + rand() * 0.25) + 0.015) * Math.min(1, t / 0.1);
           col[i * 3] = c.r * b; col[i * 3 + 1] = c.g * b; col[i * 3 + 2] = c.b * b;
         }
         ringGroup.add(makePoints(pos, col, 1.45));
@@ -353,10 +355,10 @@ export function createInterior(renderer, camera) {
 
         n.hoverT += ((n.hoveredNode ? 1 : 0) - n.hoverT) * Math.min(1, dt * 12);
 
-        // 入场:行星错峰自四芒星中心散发而出,缓出飞向各自位置,边飞边长大
-        const t0 = 0.15 + i * 0.12;
-        const ak = openT < 0 ? 1 : Math.max(0, Math.min(1, (openT - t0) / 1.1));
-        const ae = 1 - Math.pow(1 - ak, 3);
+        // 入场(宇宙大爆炸式):行星几乎同时自中心迸出,0.5s 急速就位(easeOutQuart 前快后缓)
+        const t0 = 0.05 + i * 0.06;
+        const ak = openT < 0 ? 1 : Math.max(0, Math.min(1, (openT - t0) / 0.5));
+        const ae = 1 - Math.pow(1 - ak, 4);
         n.g.position.copy(n.tgtPos).multiplyScalar(ae);
         n.g.scale.setScalar(Math.max(0.0001, (0.15 + 0.85 * ae) * (1 + n.hoverT * 0.12)));
 
