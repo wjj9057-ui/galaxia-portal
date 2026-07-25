@@ -355,12 +355,17 @@ export function createInterior(renderer, camera) {
 
         n.hoverT += ((n.hoveredNode ? 1 : 0) - n.hoverT) * Math.min(1, dt * 12);
 
-        // 入场(宇宙大爆炸式):行星几乎同时自中心迸出,0.5s 急速就位(easeOutQuart 前快后缓)
-        const t0 = 0.05 + i * 0.06;
-        const ak = openT < 0 ? 1 : Math.max(0, Math.min(1, (openT - t0) / 0.5));
-        const ae = 1 - Math.pow(1 - ak, 4);
+        // 入场(迸发式):出膛极快 + 长长的丝滑滑行(easeOutExpo),飞行前段由透明渐显
+        // 生硬感的根源是"匀速射出+到位急停",指数曲线的长尾减速才是"炸开后余烬飘落"的丝滑
+        const t0 = 0.05 + i * 0.08;
+        const ak = openT < 0 ? 1 : Math.max(0, Math.min(1, (openT - t0) / 1.4));
+        const ae = ak >= 1 ? 1 : 1 - Math.pow(2, -10 * ak);
+        const fade = Math.min(1, ak * 3); // 前 1/3 淡入,消除"实心球硬弹出"的突兀
         n.g.position.copy(n.tgtPos).multiplyScalar(ae);
-        n.g.scale.setScalar(Math.max(0.0001, (0.15 + 0.85 * ae) * (1 + n.hoverT * 0.12)));
+        n.g.scale.setScalar(Math.max(0.0001, (0.3 + 0.7 * ae) * (1 + n.hoverT * 0.12)));
+        n.bodySp.material.opacity = fade;
+        n.haloSp.material.opacity = fade;
+        n.core.material.uniforms.uMul.value = 0.68 * fade;
 
         // 标签:行星就位后才渐显(悬停提亮转金)
         const el = labelEls[i];
