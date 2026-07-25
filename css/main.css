@@ -77,29 +77,35 @@ html, body {
   background: linear-gradient(to bottom, rgba(12, 12, 16, 0.75), rgba(12, 12, 16, 0));
 }
 .hud-left { display: flex; align-items: baseline; gap: 14px; min-width: 0; }
-/* 标题:中文保持原衬线(思源宋),英文全大写走高对比西文衬线(GALAXIA 式),副标题独立一行居下 */
+/* 标题(参考 GALAXIA 版式):第一行小号英文大写、大字距;
+   第二行中文"叙世者 · 从一次对话,到一个世界",两端撑满、总宽与英文行对齐 */
 .logo {
-  font-family: var(--serif);
-  font-size: 24px;
-  font-weight: 400;
-  letter-spacing: 0.34em;
+  display: inline-block;
   color: #f3e9d2;
   text-shadow: none;
 }
 .logo-en {
-  font-family: "Didot", "Bodoni MT", "Playfair Display", Georgia, "Times New Roman", serif;
-  letter-spacing: 0.3em;
-}
-.logo-sub {
   display: block;
-  margin-left: 0;
-  margin-top: 6px;
+  font-family: "Didot", "Bodoni MT", "Playfair Display", Georgia, "Times New Roman", serif;
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: 0.38em;
+  margin-right: -0.38em; /* 抵消行尾字距,使块宽=文字实宽,中文行才能真正对齐 */
+  white-space: nowrap;
+}
+.logo-cn {
+  display: block;
+  margin-top: 7px;
   font-family: var(--serif);
   font-size: 11px;
   font-weight: 400;
-  letter-spacing: 0.32em;
   color: var(--hud-dim);
+  text-align: justify;
+  text-align-last: justify; /* 两端对齐撑满,与英文行同宽 */
+  text-justify: inter-character;
 }
+/* 客户数不在标题区展示 */
+.client-count { display: none; }
 .client-count { font-size: 12px; color: var(--hud-dim); white-space: nowrap; }
 
 .hud-center {
@@ -504,14 +510,13 @@ html, body {
 #loading.fade { opacity: 0; pointer-events: none; }
 .loading-inner { text-align: center; }
 .loading-logo {
-  font-family: var(--serif);
-  font-size: 28px;
-  font-weight: 700;
-  letter-spacing: 0.4em;
+  display: inline-block;
   color: #f7edd8;
-  text-shadow: 0 0 30px rgba(212, 169, 90, 0.5);
+  text-shadow: 0 0 30px rgba(212, 169, 90, 0.35);
   margin-bottom: 22px;
 }
+.loading-logo .logo-en { font-size: 26px; }
+.loading-logo .logo-cn { font-size: 13px; }
 .loading-bar {
   width: 220px;
   height: 2px;
