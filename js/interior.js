@@ -1,7 +1,7 @@
-// interior.js — 星球内部层:五个平级小星系环列同转(参考:星尘带上点缀一族星系)
-// 每个小星系 = 完整缩小版点彩星系(小发光核 + L2~L5 粒子云,锁版工厂小尺寸生成)
-// 色调同源不同貌:全部以案子主色为底,子云斑块在主/辅色间轮换
-// 圆环作为 Group 缓慢整体自转(约 75s 一周),每个小星系再带极慢自转
+// interior.js — 星球内部层 v3:中央立体四芒星 + 大小不一/高低错落的小星系散落四周
+// 四芒星构成:① 致密亮心 ② 梭形横盘(任意角度侧看即横向星芒) ③ 梭形纵芒(轴向光柱) ④ 金色亮砂点缀
+// 芒的要义:近心丰满明亮,向尖端收细消散(梭形渐变),绝不允许粗细均匀的"坐标轴"感
+// 泛光与一级页同参(定稿:强度1.06/半径0.55/阈值0.32),发光感全站一致
 import * as THREE from 'three';
 import { createGlowSphere } from './planets.js';
 import { makeCloudLayers } from './pointillism-factory.js';
@@ -35,7 +35,6 @@ export function createInterior(renderer, camera) {
   let minis = [];
   let ringGroup = null;
   let stardust = null;
-  let ringBand = null;
   let ringR = 8;
   let open = false;
 
@@ -44,6 +43,21 @@ export function createInterior(renderer, camera) {
   const _v = new THREE.Vector3();
   const _dir = new THREE.Vector3();
 
+  const WARM = { r: 1, g: 243 / 255, b: 224 / 255 };            // 暖白
+  const GOLD = { r: 217 / 255, g: 192 / 255, b: 138 / 255 };    // 金砂
+
+  function makePoints(pos, col, size) {
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+    const pts = new THREE.Points(geo, new THREE.PointsMaterial({
+      size, sizeAttenuation: false, vertexColors: true,
+      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+    }));
+    pts.frustumCulled = false;
+    return pts;
+  }
+
   function clear() {
     labelEls.forEach((el) => el.remove());
     labelEls = [];
@@ -51,16 +65,17 @@ export function createInterior(renderer, camera) {
     if (ringGroup) {
       ringGroup.traverse((o) => {
         if (o.isSprite) { o.material.map && o.material.map.dispose(); o.material.dispose(); }
-        if (o.isMesh || o.isLine) { o.geometry && o.geometry.dispose(); o.material && o.material.dispose(); }
+        if (o.isPoints || o.isMesh || o.isLine) { o.geometry && o.geometry.dispose(); o.material && o.material.dispose(); }
       });
       scene.remove(ringGroup);
       ringGroup = null;
     }
-    for (const pts of [stardust, ringBand]) {
-      if (pts) { scene.remove(pts); pts.geometry.dispose(); pts.material.dispose(); }
+    if (stardust) {
+      scene.remove(stardust);
+      stardust.geometry.dispose();
+      stardust.material.dispose();
+      stardust = null;
     }
-    stardust = null;
-    ringBand = null;
   }
 
   const api = {
@@ -70,14 +85,31 @@ export function createInterior(renderer, camera) {
     getRingGroup: () => ringGroup,
     getRingR: () => ringR,
 
-    // 进入:以该案主色构建五个平级小星系 + 主色星尘/环带,相机俯视 15~25° 全景
+    // 进入:立体四芒星 + 散落小星系;机位比 v2 拉近(2.2 → 1.85 倍),整体在画面中更大
     open({ glowBase, radius, seed, fromDir, main, secondary }) {
       clear();
       const rand = mulberry32(seed * 31 + 5);
       const mainC = new THREE.Color(main[0] / 255, main[1] / 255, main[2] / 255);
       const secC = new THREE.Color(secondary[0] / 255, secondary[1] / 255, secondary[2] / 255);
 
-      // ---------- 背景星尘(亮度 × 0.7;15% 染主色暗调) ----------
+      const spreadR = radius * 30;
+      ringR = spreadR;
+      ringGroup = new THREE.Group();
+      ringGroup.name = 'interior-cluster';
+      scene.add(ringGroup);
+
+      // 三段配色:t=0 心(暖白/金) → t=1 芒尖(主色/辅色)
+      function armColor(t, r) {
+        const pick = r();
+        let c;
+        if (pick < 0.5 - t * 0.42) c = WARM;
+        else if (pick < 0.78 - t * 0.3) c = GOLD;
+        else if (pick < 0.92) c = mainC;
+        else c = secC;
+        return c;
+      }
+
+      // ---------- 背景星尘(静止;亮度 × 0.7,15% 染主色暗调) ----------
       {
         const N = 1500;
         const pos = new Float32Array(N * 3);
@@ -97,79 +129,111 @@ export function createInterior(renderer, camera) {
           else c = [b, 0.96 * b, 0.9 * b];
           col[i * 3] = c[0]; col[i * 3 + 1] = c[1]; col[i * 3 + 2] = c[2];
         }
-        const geo = new THREE.BufferGeometry();
-        geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-        geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
-        const pts = new THREE.Points(geo, new THREE.PointsMaterial({
-          size: 1.4, sizeAttenuation: false, vertexColors: true,
-          transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
-        }));
-        pts.frustumCulled = false;
-        scene.add(pts);
-        stardust = pts;
+        stardust = makePoints(pos, col, 1.4);
+        scene.add(stardust);
       }
 
-      // ---------- 该案点彩粒子云环带(主色 + 辅色,穿心而过) ----------
+      // ---------- ① 致密亮心:四芒星的心脏,比 v2 更亮更满 ----------
       {
-        const N = 2600;
+        const N = 4200;
         const pos = new Float32Array(N * 3);
         const col = new Float32Array(N * 3);
-        const bandR = radius * 28; // 与圆环同尺度
+        const sigma = spreadR * 0.13;
         for (let i = 0; i < N; i++) {
-          const a = rand() * Math.PI * 2;
-          const rr = bandR * (0.55 + Math.abs(rand() + rand() - 1) * 0.55);
-          pos[i * 3] = Math.cos(a) * rr + (rand() - 0.5) * bandR * 0.12;
-          pos[i * 3 + 1] = (rand() - 0.5) * bandR * 0.16;
-          pos[i * 3 + 2] = Math.sin(a) * rr + (rand() - 0.5) * bandR * 0.12;
-          const useMain = rand() < 0.6;
-          const c = useMain ? mainC : secC;
-          const b = 0.3 + Math.pow(rand(), 2.0) * 0.7;
+          const gx = (rand() + rand() + rand() + rand() - 2) / 2;
+          const gy = (rand() + rand() + rand() + rand() - 2) / 2;
+          const gz = (rand() + rand() + rand() + rand() - 2) / 2;
+          const x = gx * sigma, y = gy * sigma * 0.75, z = gz * sigma;
+          pos[i * 3] = x; pos[i * 3 + 1] = y; pos[i * 3 + 2] = z;
+          const rr = Math.sqrt(x * x + y * y + z * z);
+          const t = Math.min(1, rr / (sigma * 2.1));
+          const c = armColor(t * 0.8, rand);
+          const b = (1 - t * 0.6) * (0.7 + rand() * 0.6);
           col[i * 3] = c.r * b; col[i * 3 + 1] = c.g * b; col[i * 3 + 2] = c.b * b;
         }
-        const geo = new THREE.BufferGeometry();
-        geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-        geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
-        const pts = new THREE.Points(geo, new THREE.PointsMaterial({
-          size: 1.6, sizeAttenuation: false, vertexColors: true,
-          transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
-        }));
-        pts.frustumCulled = false;
-        pts.rotation.x = (rand() - 0.5) * 0.3;
-        scene.add(pts);
-        ringBand = pts;
+        ringGroup.add(makePoints(pos, col, 1.7));
       }
 
-      // ---------- 五个平级小星系(同一圆环等距分布,没有主次) ----------
-      ringR = radius * 28;                // 圆环半径 ≈ 屏高 0.32(配合 ringR*3 机位)
-      ringGroup = new THREE.Group();
-      ringGroup.name = 'interior-ring';
-      scene.add(ringGroup);
-
-      // 圆环暗线(#d9c08a,极淡)
+      // ---------- ② 梭形横盘:近心厚而亮,向盘缘收细消散(侧看即横向星芒) ----------
       {
-        const pts = [];
-        for (let k = 0; k <= 96; k++) {
-          const a = (k / 96) * Math.PI * 2;
-          pts.push(new THREE.Vector3(Math.cos(a) * ringR, 0, Math.sin(a) * ringR));
+        const N = 5200;
+        const pos = new Float32Array(N * 3);
+        const col = new Float32Array(N * 3);
+        const armR = spreadR * 1.05;
+        for (let i = 0; i < N; i++) {
+          const a = rand() * Math.PI * 2;
+          const rr = armR * Math.pow(rand(), 1.6);            // 密度向心聚拢
+          const t = rr / armR;                                 // 0 心 → 1 尖
+          const thick = spreadR * (0.012 + 0.085 * Math.pow(1 - t, 1.3)); // 梭形:越远越薄
+          const y = ((rand() + rand() + rand()) / 1.5 - 1) * thick;
+          pos[i * 3] = Math.cos(a) * rr;
+          pos[i * 3 + 1] = y;
+          pos[i * 3 + 2] = Math.sin(a) * rr;
+          const c = armColor(t, rand);
+          const b = Math.pow(1 - t, 1.25) * (0.5 + rand() * 0.6) + 0.05;
+          col[i * 3] = c.r * b; col[i * 3 + 1] = c.g * b; col[i * 3 + 2] = c.b * b;
         }
-        const line = new THREE.Line(
-          new THREE.BufferGeometry().setFromPoints(pts),
-          new THREE.LineBasicMaterial({
-            color: 0xd9c08a, transparent: true, opacity: 0.05,
-            blending: THREE.AdditiveBlending, depthWrite: false,
-          })
-        );
-        ringGroup.add(line);
+        ringGroup.add(makePoints(pos, col, 1.55));
       }
 
-      const miniD = ringR * 0.24;
+      // ---------- ③ 梭形纵芒:上下两道光柱,同样近心粗、向尖端收细 ----------
+      {
+        const N = 1600;
+        const pos = new Float32Array(N * 3);
+        const col = new Float32Array(N * 3);
+        const armH = spreadR * 0.62;
+        for (let i = 0; i < N; i++) {
+          const sign = rand() < 0.5 ? -1 : 1;
+          const yy = armH * Math.pow(rand(), 1.7) * sign;      // 密度向心聚拢
+          const t = Math.abs(yy) / armH;
+          const thick = spreadR * (0.01 + 0.055 * Math.pow(1 - t, 1.3));
+          pos[i * 3] = ((rand() + rand() - 1)) * thick;
+          pos[i * 3 + 1] = yy;
+          pos[i * 3 + 2] = ((rand() + rand() - 1)) * thick;
+          const c = armColor(t, rand);
+          const b = Math.pow(1 - t, 1.2) * (0.45 + rand() * 0.55) + 0.04;
+          col[i * 3] = c.r * b; col[i * 3 + 1] = c.g * b; col[i * 3 + 2] = c.b * b;
+        }
+        ringGroup.add(makePoints(pos, col, 1.45));
+      }
+
+      // ---------- ④ 金色亮砂:横盘与纵芒上零星的高亮颗粒,提"星屑"质感 ----------
+      {
+        const N = 460;
+        const pos = new Float32Array(N * 3);
+        const col = new Float32Array(N * 3);
+        const armR = spreadR * 1.0;
+        for (let i = 0; i < N; i++) {
+          const onDisc = rand() < 0.78;
+          if (onDisc) {
+            const a = rand() * Math.PI * 2;
+            const rr = armR * Math.pow(rand(), 1.4);
+            pos[i * 3] = Math.cos(a) * rr;
+            pos[i * 3 + 1] = ((rand() + rand() - 1)) * spreadR * 0.05 * (1 - rr / armR);
+            pos[i * 3 + 2] = Math.sin(a) * rr;
+          } else {
+            const yy = spreadR * 0.55 * Math.pow(rand(), 1.5) * (rand() < 0.5 ? -1 : 1);
+            pos[i * 3] = ((rand() + rand() - 1)) * spreadR * 0.02;
+            pos[i * 3 + 1] = yy;
+            pos[i * 3 + 2] = ((rand() + rand() - 1)) * spreadR * 0.02;
+          }
+          const b = 0.85 + rand() * 0.5;
+          const c = rand() < 0.7 ? GOLD : WARM;
+          col[i * 3] = c.r * b; col[i * 3 + 1] = c.g * b; col[i * 3 + 2] = c.b * b;
+        }
+        ringGroup.add(makePoints(pos, col, 1.9));
+      }
+
+      // ---------- ⑤ 五个五域小星系:大小差约 3 倍,距离/高度立体错落 ----------
+      const baseD = spreadR * 0.5;
       NODE_DEFS.forEach((def, i) => {
-        const ang = (i / NODE_DEFS.length) * Math.PI * 2 + rand() * 0.25;
-        const D = miniD * (0.85 + rand() * 0.35);   // 大小微差,各有性格
+        const ang = (i / NODE_DEFS.length) * Math.PI * 2 + (rand() - 0.5) * 0.7;
+        const dist = spreadR * (0.55 + rand() * 0.7);         // 0.55 ~ 1.25 spreadR
+        const D = baseD * (0.5 + rand() * 1.1);               // 大小差可达 ~3.2 倍
         const R = D / 2;
         const haloSize = D * 1.65;
+        const yOff = (rand() - 0.5) * spreadR * 0.9;          // 高低错落 ±0.45 spreadR
 
-        // 完整缩小版点彩星系:子云斑块在主/辅色间轮换
         const layers = makeCloudLayers({
           main,
           patches: [i % 2 === 0 ? secondary : main],
@@ -181,7 +245,7 @@ export function createInterior(renderer, camera) {
         });
 
         const g = new THREE.Group();
-        g.position.set(Math.cos(ang) * ringR, 0, Math.sin(ang) * ringR);
+        g.position.set(Math.cos(ang) * dist, yOff, Math.sin(ang) * dist);
 
         function layerSprite(tex, colorMul) {
           const mat = new THREE.SpriteMaterial({
@@ -193,17 +257,16 @@ export function createInterior(renderer, camera) {
           sp.scale.set(haloSize, haloSize, 1);
           return sp;
         }
-        const bodySp = layerSprite(layers.body, 1.6);
-        const haloSp = layerSprite(layers.halo, 1.1);
+        const bodySp = layerSprite(layers.body, 1.8);
+        const haloSp = layerSprite(layers.halo, 1.15);
         g.add(bodySp, haloSp);
 
-        // 小发光核:主色向暖白混 45%(绝不是白球)
+        // 小发光核:主色向暖白混 45%,半径比 v2 略大,阈值 0.32 下会与一级页同款泛光
         const miniGlow = new THREE.Color(main[0] / 255, main[1] / 255, main[2] / 255)
           .lerp(new THREE.Color(1, 243 / 255, 224 / 255), 0.45);
-        const core = createGlowSphere(miniGlow, R * 0.11);
+        const core = createGlowSphere(miniGlow, R * 0.13);
         g.add(core);
 
-        // 隐形拾取球
         const proxy = new THREE.Mesh(
           new THREE.SphereGeometry(R * 0.6, 10, 8),
           new THREE.MeshBasicMaterial({ colorWrite: false, depthWrite: false, transparent: true, side: THREE.DoubleSide })
@@ -213,7 +276,6 @@ export function createInterior(renderer, camera) {
 
         ringGroup.add(g);
 
-        // 衬线标签(仅悬停时浮现)
         const el = document.createElement('div');
         el.className = 'planet-label node-label';
         el.textContent = def.label;
@@ -228,17 +290,17 @@ export function createInterior(renderer, camera) {
         });
       });
 
-      // 相机:俯视 15~25° 的全景机位(圆环与粒子带一眼看全)
-      const elev = THREE.MathUtils.degToRad(20);
-      const dist = ringR * 3;
+      // 相机:近全景,整体明显放大(v2 的 2.2 倍 → 1.85 倍),俯角 14°
+      const elev = THREE.MathUtils.degToRad(14);
+      const dist = spreadR * 1.85;
       const flat = _dir.copy(fromDir).setY(0).normalize();
       camera.position.set(flat.x * dist * Math.cos(elev), dist * Math.sin(elev), flat.z * dist * Math.cos(elev));
       camera.lookAt(0, 0, 0);
 
       if (!postfx) {
         postfx = createPostFX(renderer, scene, camera, { bloomScale: 0.6 });
-        // 与主场景一致的克制泛光
-        postfx.setBloom({ strength: 0.3, radius: 0.4, threshold: 0.85 });
+        // 与一级页定稿参数完全一致(卷的最终审美决定):发光感全站统一
+        postfx.setBloom({ strength: 1.06, radius: 0.55, threshold: 0.32 });
         postfx.setGrade({ vignette: 0.55, grain: 0.05, aberration: 0.0016 });
       }
       open = true;
@@ -250,7 +312,6 @@ export function createInterior(renderer, camera) {
       clear();
     },
 
-    // 命中检测(返回节点 def 或 null;同步刷新悬停态)
     pickAt(mx, my) {
       if (!open || !minis.length) return null;
       ndc.set((mx / innerWidth) * 2 - 1, -(my / innerHeight) * 2 + 1);
@@ -263,22 +324,19 @@ export function createInterior(renderer, camera) {
 
     update(dt, elapsed) {
       if (!open) return;
-      // 整个圆环作为 Group 缓慢整体自转(约 75 秒一周)
+      // 四芒星与小星系作为一个整体缓慢同转(约 75 秒一周)
       if (ringGroup) ringGroup.rotation.y = elapsed * (Math.PI * 2 / 75);
 
       for (let i = 0; i < minis.length; i++) {
         const n = minis[i];
-        // 小星系极慢自转(贴图反向) + 发光核自转
         const w = 0.006 * n.rotDir * dt;
         n.bodySp.material.rotation -= w;
         n.haloSp.material.rotation += w;
         n.core.rotation.y += 0.02 * dt;
-        // halo 每帧沿"小星系中心 → 相机"视线方向重排(任意角度同心)
         n.g.getWorldPosition(_v);
         _dir.copy(camera.position).sub(_v).normalize();
         n.haloSp.position.copy(_dir).multiplyScalar(n.R * 0.35);
 
-        // 悬停:轻微放大 + 浮现名字
         n.hoverT += ((n.hoveredNode ? 1 : 0) - n.hoverT) * Math.min(1, dt * 12);
         n.g.scale.setScalar(1 + n.hoverT * 0.12);
 
