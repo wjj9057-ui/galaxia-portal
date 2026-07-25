@@ -1,6 +1,7 @@
-// interior.js — 星球内部层 v3:中央立体四芒星 + 大小不一/高低错落的小星系散落四周
+// interior.js — 星球内部层 v3.1:中央立体四芒星 + 大小不一/高低错落的小星系散落四周
 // 四芒星构成:① 致密亮心 ② 梭形横盘(任意角度侧看即横向星芒) ③ 梭形纵芒(轴向光柱) ④ 金色亮砂点缀
 // 芒的要义:近心丰满明亮,向尖端收细消散(梭形渐变),绝不允许粗细均匀的"坐标轴"感
+// v3.1:纵芒/横盘的梭形渐变加陡(中段更粗、尖端急收);小星系亮度回落到一级页近观档;五域标签常显淡字
 // 泛光与一级页同参(定稿:强度1.06/半径0.55/阈值0.32),发光感全站一致
 import * as THREE from 'three';
 import { createGlowSphere } from './planets.js';
@@ -133,12 +134,12 @@ export function createInterior(renderer, camera) {
         scene.add(stardust);
       }
 
-      // ---------- ① 致密亮心:四芒星的心脏,比 v2 更亮更满 ----------
+      // ---------- ① 致密亮心:四芒星的心脏(亮度较 v3 回落,避免糊成白饼) ----------
       {
-        const N = 4200;
+        const N = 2200;
         const pos = new Float32Array(N * 3);
         const col = new Float32Array(N * 3);
-        const sigma = spreadR * 0.13;
+        const sigma = spreadR * 0.1;
         for (let i = 0; i < N; i++) {
           const gx = (rand() + rand() + rand() + rand() - 2) / 2;
           const gy = (rand() + rand() + rand() + rand() - 2) / 2;
@@ -148,7 +149,7 @@ export function createInterior(renderer, camera) {
           const rr = Math.sqrt(x * x + y * y + z * z);
           const t = Math.min(1, rr / (sigma * 2.1));
           const c = armColor(t * 0.8, rand);
-          const b = (1 - t * 0.6) * (0.7 + rand() * 0.6);
+          const b = (1 - t * 0.7) * (0.5 + rand() * 0.45);
           col[i * 3] = c.r * b; col[i * 3 + 1] = c.g * b; col[i * 3 + 2] = c.b * b;
         }
         ringGroup.add(makePoints(pos, col, 1.7));
@@ -162,44 +163,45 @@ export function createInterior(renderer, camera) {
         const armR = spreadR * 1.05;
         for (let i = 0; i < N; i++) {
           const a = rand() * Math.PI * 2;
-          const rr = armR * Math.pow(rand(), 1.6);            // 密度向心聚拢
+          const rr = armR * Math.pow(rand(), 1.9);            // 密度更强地向心聚拢
           const t = rr / armR;                                 // 0 心 → 1 尖
-          const thick = spreadR * (0.012 + 0.085 * Math.pow(1 - t, 1.3)); // 梭形:越远越薄
+          const thick = spreadR * (0.008 + 0.1 * Math.pow(1 - t, 1.9)); // 梭形:中段厚、盘缘急收
           const y = ((rand() + rand() + rand()) / 1.5 - 1) * thick;
           pos[i * 3] = Math.cos(a) * rr;
           pos[i * 3 + 1] = y;
           pos[i * 3 + 2] = Math.sin(a) * rr;
           const c = armColor(t, rand);
-          const b = Math.pow(1 - t, 1.25) * (0.5 + rand() * 0.6) + 0.05;
+          const b = Math.pow(1 - t, 1.7) * (0.42 + rand() * 0.5) + 0.03;
           col[i * 3] = c.r * b; col[i * 3 + 1] = c.g * b; col[i * 3 + 2] = c.b * b;
         }
-        ringGroup.add(makePoints(pos, col, 1.55));
+        ringGroup.add(makePoints(pos, col, 1.35));
       }
 
-      // ---------- ③ 梭形纵芒:上下两道光柱,同样近心粗、向尖端收细 ----------
+      // ---------- ③ 梭形纵芒:上下两道光柱,中段丰满、向尖端急剧收细消散 ----------
       {
-        const N = 1600;
+        const N = 2200;
         const pos = new Float32Array(N * 3);
         const col = new Float32Array(N * 3);
-        const armH = spreadR * 0.62;
+        const armH = spreadR * 0.72;
         for (let i = 0; i < N; i++) {
           const sign = rand() < 0.5 ? -1 : 1;
-          const yy = armH * Math.pow(rand(), 1.7) * sign;      // 密度向心聚拢
+          const yy = armH * Math.pow(rand(), 2.1) * sign;      // 密度强烈向心聚拢,尖端只剩零星
           const t = Math.abs(yy) / armH;
-          const thick = spreadR * (0.01 + 0.055 * Math.pow(1 - t, 1.3));
+          const thick = spreadR * (0.006 + 0.105 * Math.pow(1 - t, 2.2)); // 梭形:中段明显粗、尖端针细
           pos[i * 3] = ((rand() + rand() - 1)) * thick;
           pos[i * 3 + 1] = yy;
           pos[i * 3 + 2] = ((rand() + rand() - 1)) * thick;
           const c = armColor(t, rand);
-          const b = Math.pow(1 - t, 1.2) * (0.45 + rand() * 0.55) + 0.04;
+          const b = Math.pow(1 - t, 2.0) * (0.5 + rand() * 0.55) + 0.02;
           col[i * 3] = c.r * b; col[i * 3 + 1] = c.g * b; col[i * 3 + 2] = c.b * b;
         }
         ringGroup.add(makePoints(pos, col, 1.45));
       }
 
       // ---------- ④ 金色亮砂:横盘与纵芒上零星的高亮颗粒,提"星屑"质感 ----------
+      // 减量、调暗、散开(尤其纵芒上的横向抖动加大),避免在光柱上结成生硬的亮块
       {
-        const N = 460;
+        const N = 360;
         const pos = new Float32Array(N * 3);
         const col = new Float32Array(N * 3);
         const armR = spreadR * 1.0;
@@ -212,16 +214,17 @@ export function createInterior(renderer, camera) {
             pos[i * 3 + 1] = ((rand() + rand() - 1)) * spreadR * 0.05 * (1 - rr / armR);
             pos[i * 3 + 2] = Math.sin(a) * rr;
           } else {
-            const yy = spreadR * 0.55 * Math.pow(rand(), 1.5) * (rand() < 0.5 ? -1 : 1);
-            pos[i * 3] = ((rand() + rand() - 1)) * spreadR * 0.02;
+            const yy = spreadR * 0.58 * Math.pow(rand(), 1.9) * (rand() < 0.5 ? -1 : 1);
+            const jit = spreadR * 0.035 * (1 - Math.abs(yy) / (spreadR * 0.58));
+            pos[i * 3] = ((rand() + rand() - 1)) * jit;
             pos[i * 3 + 1] = yy;
-            pos[i * 3 + 2] = ((rand() + rand() - 1)) * spreadR * 0.02;
+            pos[i * 3 + 2] = ((rand() + rand() - 1)) * jit;
           }
-          const b = 0.85 + rand() * 0.5;
+          const b = 0.65 + rand() * 0.4;
           const c = rand() < 0.7 ? GOLD : WARM;
           col[i * 3] = c.r * b; col[i * 3 + 1] = c.g * b; col[i * 3 + 2] = c.b * b;
         }
-        ringGroup.add(makePoints(pos, col, 1.9));
+        ringGroup.add(makePoints(pos, col, 1.6));
       }
 
       // ---------- ⑤ 五个五域小星系:大小差约 3 倍,距离/高度立体错落 ----------
@@ -257,14 +260,16 @@ export function createInterior(renderer, camera) {
           sp.scale.set(haloSize, haloSize, 1);
           return sp;
         }
-        const bodySp = layerSprite(layers.body, 1.8);
-        const haloSp = layerSprite(layers.halo, 1.15);
+        // 亮度对齐一级页"飞近星球"档(body 1.2 / halo 0.9),避免二级页整体过曝
+        const bodySp = layerSprite(layers.body, 1.2);
+        const haloSp = layerSprite(layers.halo, 0.9);
         g.add(bodySp, haloSp);
 
-        // 小发光核:主色向暖白混 45%,半径比 v2 略大,阈值 0.32 下会与一级页同款泛光
+        // 小发光核:主色向暖白混 45%,亮度压到一级页呼吸档均值,阈值 0.32 下与一级页同款泛光
         const miniGlow = new THREE.Color(main[0] / 255, main[1] / 255, main[2] / 255)
           .lerp(new THREE.Color(1, 243 / 255, 224 / 255), 0.45);
-        const core = createGlowSphere(miniGlow, R * 0.13);
+        const core = createGlowSphere(miniGlow, R * 0.1);
+        core.material.uniforms.uMul.value = 0.85;
         g.add(core);
 
         const proxy = new THREE.Mesh(
@@ -290,8 +295,9 @@ export function createInterior(renderer, camera) {
         });
       });
 
-      // 相机:近全景,整体明显放大(v2 的 2.2 倍 → 1.85 倍),俯角 14°
-      const elev = THREE.MathUtils.degToRad(14);
+      // 相机:近全景,整体明显放大(v2 的 2.2 倍 → 1.85 倍);俯角压到 8°,
+      // 让横盘接近侧视、读成横向星芒,与纵芒合成四芒星(参考图式)
+      const elev = THREE.MathUtils.degToRad(8);
       const dist = spreadR * 1.85;
       const flat = _dir.copy(fromDir).setY(0).normalize();
       camera.position.set(flat.x * dist * Math.cos(elev), dist * Math.sin(elev), flat.z * dist * Math.cos(elev));
@@ -340,14 +346,14 @@ export function createInterior(renderer, camera) {
         n.hoverT += ((n.hoveredNode ? 1 : 0) - n.hoverT) * Math.min(1, dt * 12);
         n.g.scale.setScalar(1 + n.hoverT * 0.12);
 
+        // 标签常显:淡淡地落在小星系上(参考图式的简单文字),悬停时提亮转金
         const el = labelEls[i];
-        if (n.hoverT < 0.3) { el.classList.remove('show'); continue; }
         const sp = _v.clone().project(camera);
         if (sp.z > 1 || Math.abs(sp.x) > 1 || Math.abs(sp.y) > 1) { el.classList.remove('show'); continue; }
         el.classList.add('show');
         el.style.left = `${(sp.x * 0.5 + 0.5) * innerWidth}px`;
         el.style.top = `${(-sp.y * 0.5 + 0.5) * innerHeight}px`;
-        el.style.opacity = 0.4 + n.hoverT * 0.6;
+        el.style.opacity = 0.5 + n.hoverT * 0.5;
         el.style.color = n.hoverT > 0.6 ? '#d4a95a' : '';
       }
     },

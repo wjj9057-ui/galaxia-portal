@@ -365,6 +365,10 @@ function burstEnter(p, { skipRamp = false } = {}) {
 
 function enterInteriorDirect(p) {
   interiorMode = true;
+  // 收掉悬停名字牌:内部层中央不留大字,文字只出现在五域小星系上
+  hoveredPlanet = null;
+  planets.setHovered(null);
+  labelEl.classList.remove('show');
   controls.target.set(0, 0, 0);
   const fromDir = camera.position.clone().sub(p.group.position).normalize();
   const { ringR } = interior.open({
