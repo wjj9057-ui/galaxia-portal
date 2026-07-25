@@ -149,7 +149,7 @@ export function createInterior(renderer, camera) {
           const rr = Math.sqrt(x * x + y * y + z * z);
           const t = Math.min(1, rr / (sigma * 2.1));
           const c = armColor(t * 0.8, rand);
-          const b = (1 - t * 0.7) * (0.5 + rand() * 0.45);
+          const b = (1 - t * 0.7) * (0.38 + rand() * 0.34);
           col[i * 3] = c.r * b; col[i * 3 + 1] = c.g * b; col[i * 3 + 2] = c.b * b;
         }
         ringGroup.add(makePoints(pos, col, 1.7));
@@ -171,7 +171,7 @@ export function createInterior(renderer, camera) {
           pos[i * 3 + 1] = y;
           pos[i * 3 + 2] = Math.sin(a) * rr;
           const c = armColor(t, rand);
-          const b = Math.pow(1 - t, 1.7) * (0.42 + rand() * 0.5) + 0.03;
+          const b = Math.pow(1 - t, 1.7) * (0.34 + rand() * 0.4) + 0.03;
           col[i * 3] = c.r * b; col[i * 3 + 1] = c.g * b; col[i * 3 + 2] = c.b * b;
         }
         ringGroup.add(makePoints(pos, col, 1.35));
@@ -192,7 +192,7 @@ export function createInterior(renderer, camera) {
           pos[i * 3 + 1] = yy;
           pos[i * 3 + 2] = ((rand() + rand() - 1)) * thick;
           const c = armColor(t, rand);
-          const b = Math.pow(1 - t, 2.0) * (0.5 + rand() * 0.55) + 0.02;
+          const b = Math.pow(1 - t, 2.0) * (0.42 + rand() * 0.46) + 0.02;
           col[i * 3] = c.r * b; col[i * 3 + 1] = c.g * b; col[i * 3 + 2] = c.b * b;
         }
         ringGroup.add(makePoints(pos, col, 1.45));
@@ -260,16 +260,16 @@ export function createInterior(renderer, camera) {
           sp.scale.set(haloSize, haloSize, 1);
           return sp;
         }
-        // 亮度对齐一级页"飞近星球"档(body 1.2 / halo 0.9),避免二级页整体过曝
-        const bodySp = layerSprite(layers.body, 1.2);
-        const haloSp = layerSprite(layers.halo, 0.9);
+        // 亮度压到一级页"飞近星球"档以下(body 1.0 / halo 0.75),二级页整体走暗调
+        const bodySp = layerSprite(layers.body, 1.0);
+        const haloSp = layerSprite(layers.halo, 0.75);
         g.add(bodySp, haloSp);
 
         // 小发光核:主色向暖白混 45%,亮度压到一级页呼吸档均值,阈值 0.32 下与一级页同款泛光
         const miniGlow = new THREE.Color(main[0] / 255, main[1] / 255, main[2] / 255)
           .lerp(new THREE.Color(1, 243 / 255, 224 / 255), 0.45);
         const core = createGlowSphere(miniGlow, R * 0.1);
-        core.material.uniforms.uMul.value = 0.85;
+        core.material.uniforms.uMul.value = 0.68;
         g.add(core);
 
         const proxy = new THREE.Mesh(

@@ -77,20 +77,23 @@ html, body {
   background: linear-gradient(to bottom, rgba(12, 12, 16, 0.75), rgba(12, 12, 16, 0));
 }
 .hud-left { display: flex; align-items: baseline; gap: 14px; min-width: 0; }
+/* 标题:参考 GALAXIA 式排版——细衬线大写、大字距,副标题独立一行居下 */
 .logo {
   font-family: var(--serif);
-  font-size: 21px;
-  font-weight: 700;
-  letter-spacing: 0.28em;
-  color: #f7edd8;
-  text-shadow: 0 0 18px rgba(212, 169, 90, 0.4);
+  font-size: 24px;
+  font-weight: 400;
+  letter-spacing: 0.34em;
+  color: #f3e9d2;
+  text-shadow: none;
 }
 .logo-sub {
-  margin-left: 12px;
+  display: block;
+  margin-left: 0;
+  margin-top: 6px;
   font-family: var(--serif);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 400;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.32em;
   color: var(--hud-dim);
 }
 .client-count { font-size: 12px; color: var(--hud-dim); white-space: nowrap; }
