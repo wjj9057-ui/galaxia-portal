@@ -197,21 +197,20 @@ html, body {
   gap: 6px;
   z-index: 20;
 }
+/* 纯文字按钮:去底框,与下方快捷键提示同一条左边线对齐 */
 .preset-btn {
-  padding: 6px 12px;
+  padding: 2px 0;
   font-size: 12px;
+  letter-spacing: 0.15em;
   text-align: left;
   color: var(--hud-dim);
-  background: rgba(18, 15, 10, 0.4);
-  border: 1px solid transparent;
-  border-radius: 8px;
+  background: none;
+  border: none;
   cursor: pointer;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transition: all 0.15s ease;
+  transition: color 0.15s ease;
 }
-.preset-btn:hover { color: #fff; border-color: var(--panel-border); }
-.preset-btn.active { color: var(--accent); border-color: rgba(212, 169, 90, 0.4); }
+.preset-btn:hover { color: #fff; }
+.preset-btn.active { color: var(--accent); }
 
 /* ============ 快捷键提示 ============ */
 #shortcuts {

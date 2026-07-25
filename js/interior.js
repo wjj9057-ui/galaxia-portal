@@ -2,7 +2,7 @@
 // 四芒星构成:① 致密亮心 ② 梭形横盘(任意角度侧看即横向星芒) ③ 梭形纵芒(轴向光柱) ④ 金色亮砂点缀
 // 芒的要义:近心丰满明亮,向尖端收细消散(梭形渐变),绝不允许粗细均匀的"坐标轴"感
 // 定调:四芒星只作氛围、亮度显著低于五域小星系——行星才是主体
-// v3.2:汇聚入场——进入时四芒星粒子从四方奔向既定位置(约2s),随后五域小星系错峰浮现
+// v3.3:入场改为"星从星芒中生":四芒星开场即在,五域小星系从中心散发飞向各自位置
 // 泛光与一级页同参(定稿:强度1.06/半径0.55/阈值0.32),发光感全站一致
 import * as THREE from 'three';
 import { createGlowSphere } from './planets.js';
@@ -39,9 +39,7 @@ export function createInterior(renderer, camera) {
   let stardust = null;
   let ringR = 8;
   let open = false;
-  let openT = -1;        // 进入后的累计时间(驱动汇聚入场与小星系浮现)
-  let clouds = [];       // 四芒星各粒子层的 {attr, start, tgt},供汇聚动画插值
-  const INTRO = 2.0;     // 汇聚时长(秒)
+  let openT = -1;        // 进入后的累计时间(驱动小星系自中心散发的入场)
 
   const raycaster = new THREE.Raycaster();
   const ndc = new THREE.Vector2(-2, -2);
@@ -67,7 +65,6 @@ export function createInterior(renderer, camera) {
     labelEls.forEach((el) => el.remove());
     labelEls = [];
     minis = [];
-    clouds = [];
     openT = -1;
     if (ringGroup) {
       ringGroup.traverse((o) => {
@@ -104,25 +101,6 @@ export function createInterior(renderer, camera) {
       ringGroup = new THREE.Group();
       ringGroup.name = 'interior-cluster';
       scene.add(ringGroup);
-
-      // 汇聚入场:粒子层不直接落位,先散在四周的大球壳上,进入后 2s 内奔向目标位置
-      function addConvergeCloud(tgt, col, size) {
-        const cur = new Float32Array(tgt.length);
-        const start = new Float32Array(tgt.length);
-        for (let j = 0; j < tgt.length; j += 3) {
-          const th = rand() * Math.PI * 2;
-          const cp = rand() * 2 - 1;
-          const sp = Math.sqrt(1 - cp * cp);
-          const rr = spreadR * (1.6 + rand() * 1.6);
-          start[j] = rr * sp * Math.cos(th);
-          start[j + 1] = rr * cp * 0.8;
-          start[j + 2] = rr * sp * Math.sin(th);
-          cur[j] = start[j]; cur[j + 1] = start[j + 1]; cur[j + 2] = start[j + 2];
-        }
-        const pts = makePoints(cur, col, size);
-        ringGroup.add(pts);
-        clouds.push({ attr: pts.geometry.attributes.position, start, tgt });
-      }
 
       // 三段配色:t=0 心(暖白/金) → t=1 芒尖(主色/辅色)
       function armColor(t, r) {
@@ -161,10 +139,10 @@ export function createInterior(renderer, camera) {
 
       // ---------- ① 致密亮心:四芒星的心脏(亮度较 v3 回落,避免糊成白饼) ----------
       {
-        const N = 1000;
+        const N = 500;
         const pos = new Float32Array(N * 3);
         const col = new Float32Array(N * 3);
-        const sigma = spreadR * 0.09;
+        const sigma = spreadR * 0.045;
         for (let i = 0; i < N; i++) {
           const gx = (rand() + rand() + rand() + rand() - 2) / 2;
           const gy = (rand() + rand() + rand() + rand() - 2) / 2;
@@ -178,7 +156,7 @@ export function createInterior(renderer, camera) {
           const b = (1 - t * 0.7) * (0.09 + rand() * 0.08);
           col[i * 3] = c.r * b; col[i * 3 + 1] = c.g * b; col[i * 3 + 2] = c.b * b;
         }
-        addConvergeCloud(pos, col, 1.4);
+        ringGroup.add(makePoints(pos, col, 1.4));
       }
 
       // ---------- ② 梭形横盘:近心厚而亮,向盘缘收细消散(侧看即横向星芒) ----------
@@ -200,7 +178,7 @@ export function createInterior(renderer, camera) {
           const b = Math.pow(1 - t, 1.7) * (0.18 + rand() * 0.22) + 0.02;
           col[i * 3] = c.r * b; col[i * 3 + 1] = c.g * b; col[i * 3 + 2] = c.b * b;
         }
-        addConvergeCloud(pos, col, 1.35);
+        ringGroup.add(makePoints(pos, col, 1.35));
       }
 
       // ---------- ③ 梭形纵芒:上下两道光柱,中段丰满、向尖端急剧收细消散 ----------
@@ -221,7 +199,7 @@ export function createInterior(renderer, camera) {
           const b = Math.pow(1 - t, 2.0) * (0.22 + rand() * 0.25) + 0.015;
           col[i * 3] = c.r * b; col[i * 3 + 1] = c.g * b; col[i * 3 + 2] = c.b * b;
         }
-        addConvergeCloud(pos, col, 1.45);
+        ringGroup.add(makePoints(pos, col, 1.45));
       }
 
       // ---------- ④ 金色亮砂:横盘与纵芒上零星的高亮颗粒,提"星屑"质感 ----------
@@ -250,7 +228,7 @@ export function createInterior(renderer, camera) {
           const c = rand() < 0.7 ? GOLD : WARM;
           col[i * 3] = c.r * b; col[i * 3 + 1] = c.g * b; col[i * 3 + 2] = c.b * b;
         }
-        addConvergeCloud(pos, col, 1.6);
+        ringGroup.add(makePoints(pos, col, 1.6));
       }
 
       // ---------- ⑤ 五个五域小星系:大小差约 3 倍,距离/高度立体错落 ----------
@@ -274,7 +252,9 @@ export function createInterior(renderer, camera) {
         });
 
         const g = new THREE.Group();
-        g.position.set(Math.cos(ang) * dist, yOff, Math.sin(ang) * dist);
+        // 入场:行星自四芒星中心散发而出,先落位于中心,update 中飞向 tgtPos
+        const tgtPos = new THREE.Vector3(Math.cos(ang) * dist, yOff, Math.sin(ang) * dist);
+        g.position.set(0, 0, 0);
 
         function layerSprite(tex, colorMul) {
           const mat = new THREE.SpriteMaterial({
@@ -314,7 +294,7 @@ export function createInterior(renderer, camera) {
         labelEls.push(el);
 
         minis.push({
-          def, g, bodySp, haloSp, core, proxy,
+          def, g, bodySp, haloSp, core, proxy, tgtPos,
           D, R, haloSize,
           rotDir: rand() < 0.5 ? -1 : 1,
           hoverT: 0, hoveredNode: false,
@@ -336,7 +316,7 @@ export function createInterior(renderer, camera) {
         postfx.setGrade({ vignette: 0.55, grain: 0.05, aberration: 0.0016 });
       }
       open = true;
-      openT = 0; // 启动汇聚入场
+      openT = 0; // 启动"星从星芒中生"入场
       return { ringR };
     },
 
@@ -359,20 +339,7 @@ export function createInterior(renderer, camera) {
       if (!open) return;
       // 四芒星与小星系作为一个整体缓慢同转(约 75 秒一周)
       if (ringGroup) ringGroup.rotation.y = elapsed * (Math.PI * 2 / 75);
-
-      // 汇聚入场:0~2s 四芒星粒子从四方球壳缓出奔向既定位置(easeOutCubic)
-      if (openT >= 0) {
-        openT += dt;
-        if (clouds.length && openT <= INTRO + 0.06) {
-          const k = Math.min(1, openT / INTRO);
-          const e = 1 - Math.pow(1 - k, 3);
-          for (const c of clouds) {
-            const arr = c.attr.array;
-            for (let j = 0; j < c.tgt.length; j++) arr[j] = c.start[j] + (c.tgt[j] - c.start[j]) * e;
-            c.attr.needsUpdate = true;
-          }
-        }
-      }
+      if (openT >= 0) openT += dt;
 
       for (let i = 0; i < minis.length; i++) {
         const n = minis[i];
@@ -386,15 +353,16 @@ export function createInterior(renderer, camera) {
 
         n.hoverT += ((n.hoveredNode ? 1 : 0) - n.hoverT) * Math.min(1, dt * 12);
 
-        // 小星系错峰浮现:四芒星汇聚近尾声时(1.3s 起)依次缓出长大
-        const t0 = 1.3 + i * 0.18;
-        const ak = openT < 0 ? 1 : Math.max(0, Math.min(1, (openT - t0) / 0.7));
+        // 入场:行星错峰自四芒星中心散发而出,缓出飞向各自位置,边飞边长大
+        const t0 = 0.15 + i * 0.12;
+        const ak = openT < 0 ? 1 : Math.max(0, Math.min(1, (openT - t0) / 1.1));
         const ae = 1 - Math.pow(1 - ak, 3);
-        n.g.scale.setScalar(Math.max(0.0001, ae * (1 + n.hoverT * 0.12)));
+        n.g.position.copy(n.tgtPos).multiplyScalar(ae);
+        n.g.scale.setScalar(Math.max(0.0001, (0.15 + 0.85 * ae) * (1 + n.hoverT * 0.12)));
 
-        // 标签常显:淡淡地落在小星系上(参考图式的简单文字),悬停时提亮转金
+        // 标签:行星就位后才渐显(悬停提亮转金)
         const el = labelEls[i];
-        if (ae < 0.4) { el.classList.remove('show'); continue; }
+        if (ae < 0.7) { el.classList.remove('show'); continue; }
         const sp = _v.clone().project(camera);
         if (sp.z > 1 || Math.abs(sp.x) > 1 || Math.abs(sp.y) > 1) { el.classList.remove('show'); continue; }
         el.classList.add('show');
