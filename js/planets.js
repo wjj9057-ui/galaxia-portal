@@ -228,34 +228,30 @@ export function createPlanetSystem(clients) {
     // 配色随星走(主色/辅色为主,掺少量金砂),远看戴环的星即"回来过的人"
     const haloRings = [];
     for (let ri = 0; ri < (client.rings || 0); ri++) {
-      // 贴星:环紧贴星体;七股细环丝作"涟漪式"间距——里圈密贴,向外间距渐拉开、渐宽渐淡
-      const base = R * (0.86 + ri * 0.14);
-      const STRANDS = [
-        { off: -0.036, w: 0.006, den: 0.1, br: 0.55 },
-        { off: -0.024, w: 0.007, den: 0.16, br: 0.85 },
-        { off: -0.013, w: 0.008, den: 0.22, br: 1.0 },
-        { off: -0.003, w: 0.008, den: 0.2, br: 0.95 },
-        { off: 0.009, w: 0.009, den: 0.14, br: 0.8 },
-        { off: 0.024, w: 0.01, den: 0.1, br: 0.6 },
-        { off: 0.043, w: 0.011, den: 0.08, br: 0.45 },
-      ];
-      const N = 1100;
+      // 土星式宽环面:自星体边缘连续铺开的一整片环,面上有细密同心纹理与一道明显暗缝,
+      // 内外边缘渐隐;纹理相位由星种子决定,每颗星的环各不相同
+      const inner = R * (0.78 + ri * 0.84);
+      const bandSpan = R * (0.75 - ri * 0.2);
+      const N = 3200;
       const rpos = new Float32Array(N * 3);
       const rcol = new Float32Array(N * 3);
       const rrand = mulberry32(client.colorSeed * 977 + ri * 131 + 29);
       const GOLD = [217, 192, 138];
+      const ph1 = rrand() * Math.PI * 2, ph2 = rrand() * Math.PI * 2;
+      const gapT = 0.55 + rrand() * 0.15;            // 暗缝位置(约带宽 2/3 处)
       for (let i = 0; i < N; i++) {
-        // 按密度权重选一股环丝
-        let pickS = rrand(), s = STRANDS[0], acc = 0;
-        for (const st of STRANDS) { acc += st.den; if (pickS <= acc) { s = st; break; } }
+        const t = rrand();                            // 0 内缘 → 1 外缘
+        const rad = inner + t * bandSpan;
         const a = rrand() * Math.PI * 2;
-        const g = (rrand() + rrand() + rrand() + rrand() - 2) / 2;   // 近高斯 [-1, 1]
-        const rad = base + s.off * R + g * s.w * R;
         rpos[i * 3] = Math.cos(a) * rad;
-        rpos[i * 3 + 1] = (rrand() + rrand() - 1) * R * 0.008;       // 环面极薄
+        rpos[i * 3 + 1] = (rrand() + rrand() - 1) * R * 0.008;   // 环面极薄
         rpos[i * 3 + 2] = Math.sin(a) * rad;
-        const fall = Math.exp(-g * g * 2.0);                          // 丝心 → 丝缘渐暗
-        const b = (0.2 + rrand() * 0.4) * fall * s.br;
+        // 亮度剖面:大纹路 × 细纹路 × 内外缘渐隐 × 暗缝
+        const groove = (0.55 + 0.45 * Math.sin(t * Math.PI * 2 * 3.3 + ph1))
+                     * (0.68 + 0.32 * Math.sin(t * Math.PI * 2 * 11 + ph2));
+        const edge = Math.pow(Math.sin(Math.min(1, Math.max(0.001, t)) * Math.PI), 0.55);
+        const gap = 1 - 0.85 * Math.exp(-((t - gapT) * (t - gapT)) / 0.0022);
+        const b = (0.3 + rrand() * 0.5) * groove * edge * gap;
         const pick = rrand();
         const c = pick < 0.55 ? cp.main : (pick < 0.85 ? cp.patches[0] : GOLD);
         rcol[i * 3] = (c[0] / 255) * b;
@@ -266,7 +262,7 @@ export function createPlanetSystem(clients) {
       rgeo.setAttribute('position', new THREE.BufferAttribute(rpos, 3));
       rgeo.setAttribute('color', new THREE.BufferAttribute(rcol, 3));
       const ring = new THREE.Points(rgeo, new THREE.PointsMaterial({
-        size: 1.15, sizeAttenuation: false, vertexColors: true,
+        size: 1.25, sizeAttenuation: false, vertexColors: true,
         transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
       }));
       ring.frustumCulled = false;
