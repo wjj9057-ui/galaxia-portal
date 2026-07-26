@@ -426,7 +426,7 @@ html, body {
 #interior-info {
   position: fixed;
   left: 50%;
-  bottom: 66px;
+  bottom: 38px;
   transform: translateX(-50%);
   text-align: center;
   z-index: 15;

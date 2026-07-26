@@ -392,6 +392,8 @@ function enterInteriorDirect(p) {
   clearInterval(interiorInfoTimer);
   interiorInfoTimer = setInterval(tickSince, 10000);
   document.getElementById('interior-info').classList.remove('hidden');
+  // 星球内部不再有年份概念:收掉底部年份导航,避免与星址/计时打架
+  document.getElementById('year-nav').classList.add('hidden');
   controls.target.set(0, 0, 0);
   const fromDir = camera.position.clone().sub(p.group.position).normalize();
   const { ringR } = interior.open({
@@ -416,6 +418,7 @@ function exitInterior() {
     clearInterval(interiorInfoTimer);
     interiorInfoTimer = null;
     document.getElementById('interior-info').classList.add('hidden');
+    document.getElementById('year-nav').classList.remove('hidden');
     interiorBack.classList.add('hidden');
     veil.classList.remove('on');
     // 相机回到该星系选中位(连贯进入的抵达位姿,无名牌)

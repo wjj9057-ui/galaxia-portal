@@ -93,8 +93,7 @@ function cloudParamsFor(client) {
   return {
     main,
     patches,
-    // 多段故事的星必带环(回访的光环表达,蓝图映射规则);单故事星维持原随机率
-    ringed: (client.rings || 0) > 0 || rand() < 0.22,
+    ringed: rand() < 0.22,   // 贴图浓彩环维持原随机率;回访光环另以细金环表达(见 createPlanetSystem)
     coreType: 'none',
     seed: client.colorSeed * 1009 + 7,
   };
@@ -224,6 +223,27 @@ export function createPlanetSystem(clients) {
     );
     pGroup.add(shell1, shell2);
 
+    // ---------- 回访光环:多段故事的星,外围一道道细金环(光环数 = 故事数 − 1,蓝图映射规则) ----------
+    // 远看戴环的星即"回来过的人";环在 XZ 面,与年轮同族的金色语汇
+    const haloRings = [];
+    for (let ri = 0; ri < (client.rings || 0); ri++) {
+      const rr = R * (1.18 + ri * 0.16);
+      const pts = [];
+      for (let k = 0; k <= 96; k++) {
+        const a = (k / 96) * Math.PI * 2;
+        pts.push(new THREE.Vector3(Math.cos(a) * rr, 0, Math.sin(a) * rr));
+      }
+      const ring = new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints(pts),
+        new THREE.LineBasicMaterial({
+          color: 0xd4a95a, transparent: true, opacity: 0.42,
+          blending: THREE.AdditiveBlending, depthWrite: false,
+        })
+      );
+      pGroup.add(ring);
+      haloRings.push(ring);
+    }
+
     // 隐形拾取代理球:半径 = 星系视觉半径(D/2)× 0.6;DoubleSide 允许相机进入球内后继续命中
     const proxy = new THREE.Mesh(
       new THREE.SphereGeometry(R * 0.6, 12, 8),
@@ -242,6 +262,7 @@ export function createPlanetSystem(clients) {
       layers: { body: bodySp, halo: haloSp },
       sphere,
       shells: [shell1, shell2],
+      haloRings,
       glowBase,
       status: client.status === 'ing' ? 'ing' : 'done',  // done 满亮 / ing 未点燃(0.25)
       breathT: 3 + rand() * 2,                            // 呼吸周期 3~5s
@@ -432,6 +453,7 @@ export function createPlanetSystem(clients) {
         const match = !style || (p.data.styles ? p.data.styles.includes(style) : p.data.industry === style);
         p.dimmed = !match;
         p.layers.body.material.opacity = match ? 1 : 0.15;
+        for (const r of p.haloRings || []) r.material.opacity = match ? 0.42 : 0.08;
       }
     },
 
