@@ -33,6 +33,7 @@
       "systemId": "sys-guyi-chengnuo",
       "type": "wedding",
       "year": 2026,
+      "date": "2026-10-03",
       "season": "秋",
       "venueId": "ven-xintiantang",
       "credits": [
@@ -67,6 +68,7 @@
       "systemId": "sys-guyi-chengnuo",
       "type": "anniversary",
       "year": 2028,
+      "date": "2028-01-16",
       "season": "冬",
       "venueId": "ven-banshan-lin",
       "credits": [
@@ -93,6 +95,7 @@
       "systemId": "sys-shenhe-luwan",
       "type": "wedding",
       "year": 2026,
+      "date": "2026-04-11",
       "season": "春",
       "venueId": "ven-banshan-lin",
       "credits": [
@@ -131,6 +134,7 @@
       "id": "ven-xintiantang",
       "name": "新天安堂",
       "city": "上海",
+      "type": "教堂/礼堂",
       "intro": "示例条目:场地一句话简介。",
       "gallery": [],
       "designNotes": "示例条目:我们在此的设计沉淀。",
@@ -142,6 +146,7 @@
       "id": "ven-banshan-lin",
       "name": "半山林",
       "city": "杭州",
+      "type": "户外/山野",
       "intro": "示例条目。",
       "gallery": [],
       "designNotes": "",

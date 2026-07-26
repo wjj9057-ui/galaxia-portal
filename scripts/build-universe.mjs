@@ -37,7 +37,10 @@ for (const st of stories) {
   for (const c of st.credits || []) {
     if (!parIds.has(c.partnerId)) errors.push(`故事 ${st.id} 署名指向不存在的伙伴 ${c.partnerId}`);
   }
-  if (!st.year) errors.push(`故事 ${st.id} 缺年份`);
+  // 婚期(date,YYYY-MM-DD)可精确可缺;year 可省略,由 date 推出;两者都没有才报错
+  if (st.date && !/^\d{4}(-\d{2}-\d{2})?$/.test(st.date)) errors.push(`故事 ${st.id} 婚期格式应为 YYYY-MM-DD 或 YYYY:${st.date}`);
+  if (!st.year && st.date) st.year = Number(st.date.slice(0, 4));
+  if (!st.year) errors.push(`故事 ${st.id} 缺婚期/年份`);
 }
 for (const sys of systems) {
   if (sys.metAt && Number.isNaN(Date.parse(sys.metAt))) errors.push(`新人 ${sys.id} 的 metAt 不是合法时间:${sys.metAt}`);
@@ -80,6 +83,7 @@ const pub = {
     systemId: st.systemId,
     type: st.type,
     year: st.year,
+    date: st.date || null, // 婚期,搜索维度;公开只展示到日
     season: st.season || '',
     venueId: st.venueId || null,
     credits: st.credits || [],

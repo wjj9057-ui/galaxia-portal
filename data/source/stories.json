@@ -4,11 +4,18 @@
     "systemId": "sys-guyi-chengnuo",
     "type": "wedding",
     "year": 2026,
+    "date": "2026-10-03",
     "season": "秋",
     "venueId": "ven-xintiantang",
     "credits": [
-      { "partnerId": "par-zhangye-photo", "role": "photographer" },
-      { "partnerId": "par-linyi-host", "role": "host" }
+      {
+        "partnerId": "par-zhangye-photo",
+        "role": "photographer"
+      },
+      {
+        "partnerId": "par-linyi-host",
+        "role": "host"
+      }
     ],
     "status": "done",
     "arctic": null,
@@ -16,13 +23,21 @@
       "theme": "星石",
       "tagline": "他们把第一次见面那晚的星空,刻在了一块石头上。",
       "concept": "示例条目:概念阐述写这场婚礼的设计理念,克制、具体、有细节,不要营销腔。",
-      "style": ["星空", "自然野趣"],
-      "elements": ["星石", "手写信"],
+      "style": [
+        "星空",
+        "自然野趣"
+      ],
+      "elements": [
+        "星石",
+        "手写信"
+      ],
       "likes": 0
     },
     "private": {
       "domains": {
-        "venue": { "note": "" },
+        "venue": {
+          "note": ""
+        },
         "story": [],
         "process": [],
         "visual": [],
@@ -37,10 +52,14 @@
     "systemId": "sys-guyi-chengnuo",
     "type": "anniversary",
     "year": 2028,
+    "date": "2028-01-16",
     "season": "冬",
     "venueId": "ven-banshan-lin",
     "credits": [
-      { "partnerId": "par-zhangye-photo", "role": "photographer" }
+      {
+        "partnerId": "par-zhangye-photo",
+        "role": "photographer"
+      }
     ],
     "status": "ing",
     "arctic": null,
@@ -48,12 +67,22 @@
       "theme": "两年之后",
       "tagline": "示例条目:同一对新人的第二段故事——星的外围会多一道金环。",
       "concept": "",
-      "style": ["冬"],
+      "style": [
+        "冬"
+      ],
       "elements": [],
       "likes": 0
     },
     "private": {
-      "domains": { "venue": { "note": "" }, "story": [], "process": [], "visual": [], "moment": {} },
+      "domains": {
+        "venue": {
+          "note": ""
+        },
+        "story": [],
+        "process": [],
+        "visual": [],
+        "moment": {}
+      },
       "piece": "",
       "plan": ""
     }
@@ -63,24 +92,48 @@
     "systemId": "sys-shenhe-luwan",
     "type": "wedding",
     "year": 2026,
+    "date": "2026-04-11",
     "season": "春",
     "venueId": "ven-banshan-lin",
     "credits": [
-      { "partnerId": "par-wumu-video", "role": "videographer" },
-      { "partnerId": "par-linyi-host", "role": "host" }
+      {
+        "partnerId": "par-wumu-video",
+        "role": "videographer"
+      },
+      {
+        "partnerId": "par-linyi-host",
+        "role": "host"
+      }
     ],
     "status": "done",
-    "arctic": { "year": 2026, "note": "示例:入选北极计划的故事会点亮极光印记", "filmUrl": "" },
+    "arctic": {
+      "year": 2026,
+      "note": "示例:入选北极计划的故事会点亮极光印记",
+      "filmUrl": ""
+    },
     "public": {
       "theme": "山中信",
       "tagline": "示例条目:一句话说清这场婚礼最动人的那件事。",
       "concept": "",
-      "style": ["山野", "书信"],
-      "elements": ["手写信"],
+      "style": [
+        "山野",
+        "书信"
+      ],
+      "elements": [
+        "手写信"
+      ],
       "likes": 0
     },
     "private": {
-      "domains": { "venue": { "note": "" }, "story": [], "process": [], "visual": [], "moment": {} },
+      "domains": {
+        "venue": {
+          "note": ""
+        },
+        "story": [],
+        "process": [],
+        "visual": [],
+        "moment": {}
+      },
       "piece": "",
       "plan": ""
     }
