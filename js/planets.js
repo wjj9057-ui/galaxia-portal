@@ -230,9 +230,10 @@ export function createPlanetSystem(clients) {
     for (let ri = 0; ri < (client.rings || 0); ri++) {
       // 土星式宽环面:自星体边缘连续铺开的一整片环,面上有细密同心纹理与一道明显暗缝,
       // 内外边缘渐隐;纹理相位由星种子决定,每颗星的环各不相同
-      const inner = R * (0.78 + ri * 0.84);
-      const bandSpan = R * (0.75 - ri * 0.2);
-      const N = 3200;
+      // 窄带贴星:内缘几乎贴住发光星体的视觉边缘;每道环窄,回访多了向外一道道叠加也不喧宾夺主
+      const inner = R * (0.5 + ri * 0.3);
+      const bandSpan = R * 0.22;
+      const N = 2400;
       const rpos = new Float32Array(N * 3);
       const rcol = new Float32Array(N * 3);
       const rrand = mulberry32(client.colorSeed * 977 + ri * 131 + 29);
@@ -244,14 +245,14 @@ export function createPlanetSystem(clients) {
         const rad = inner + t * bandSpan;
         const a = rrand() * Math.PI * 2;
         rpos[i * 3] = Math.cos(a) * rad;
-        rpos[i * 3 + 1] = (rrand() + rrand() - 1) * R * 0.008;   // 环面极薄
+        rpos[i * 3 + 1] = (rrand() + rrand() - 1) * R * 0.006;   // 环面极薄
         rpos[i * 3 + 2] = Math.sin(a) * rad;
-        // 亮度剖面:大纹路 × 细纹路 × 内外缘渐隐 × 暗缝
-        const groove = (0.55 + 0.45 * Math.sin(t * Math.PI * 2 * 3.3 + ph1))
-                     * (0.68 + 0.32 * Math.sin(t * Math.PI * 2 * 11 + ph2));
+        // 亮度剖面:大纹路 × 细纹路 × 内外缘渐隐 × 暗缝(带窄,纹路周期相应收少)
+        const groove = (0.58 + 0.42 * Math.sin(t * Math.PI * 2 * 2.5 + ph1))
+                     * (0.7 + 0.3 * Math.sin(t * Math.PI * 2 * 8 + ph2));
         const edge = Math.pow(Math.sin(Math.min(1, Math.max(0.001, t)) * Math.PI), 0.55);
-        const gap = 1 - 0.85 * Math.exp(-((t - gapT) * (t - gapT)) / 0.0022);
-        const b = (0.3 + rrand() * 0.5) * groove * edge * gap;
+        const gap = 1 - 0.85 * Math.exp(-((t - gapT) * (t - gapT)) / 0.0014);
+        const b = (0.34 + rrand() * 0.5) * groove * edge * gap;
         const pick = rrand();
         const c = pick < 0.55 ? cp.main : (pick < 0.85 ? cp.patches[0] : GOLD);
         rcol[i * 3] = (c[0] / 255) * b;
