@@ -223,23 +223,41 @@ export function createPlanetSystem(clients) {
     );
     pGroup.add(shell1, shell2);
 
-    // ---------- 回访光环:多段故事的星,外围一道道细金环(光环数 = 故事数 − 1,蓝图映射规则) ----------
-    // 远看戴环的星即"回来过的人";环在 XZ 面,与年轮同族的金色语汇
+    // ---------- 回访光环:多段故事的星,外围一道道土星式粒子环带(光环数 = 故事数 − 1) ----------
+    // 粒子形态(哑光硬点,疏密作渐变):带心最密最亮,向内外边缘高斯衰减;
+    // 配色随星走(主色/辅色为主,掺少量金砂),远看戴环的星即"回来过的人"
     const haloRings = [];
     for (let ri = 0; ri < (client.rings || 0); ri++) {
-      const rr = R * (1.18 + ri * 0.16);
-      const pts = [];
-      for (let k = 0; k <= 96; k++) {
-        const a = (k / 96) * Math.PI * 2;
-        pts.push(new THREE.Vector3(Math.cos(a) * rr, 0, Math.sin(a) * rr));
+      const rr = R * (1.22 + ri * 0.18);
+      const bandW = R * 0.08;                       // 环带半宽(高斯散布)
+      const N = 900;
+      const rpos = new Float32Array(N * 3);
+      const rcol = new Float32Array(N * 3);
+      const rrand = mulberry32(client.colorSeed * 977 + ri * 131 + 29);
+      const GOLD = [217, 192, 138];
+      for (let i = 0; i < N; i++) {
+        const a = rrand() * Math.PI * 2;
+        const g = (rrand() + rrand() + rrand() + rrand() - 2) / 2;   // 近高斯 [-1, 1]
+        const rad = rr + g * bandW;
+        rpos[i * 3] = Math.cos(a) * rad;
+        rpos[i * 3 + 1] = (rrand() + rrand() - 1) * R * 0.015;       // 环面极薄
+        rpos[i * 3 + 2] = Math.sin(a) * rad;
+        const fall = Math.exp(-g * g * 2.2);                          // 带心 → 边缘渐暗
+        const b = (0.22 + rrand() * 0.45) * fall;
+        const pick = rrand();
+        const c = pick < 0.55 ? cp.main : (pick < 0.85 ? cp.patches[0] : GOLD);
+        rcol[i * 3] = (c[0] / 255) * b;
+        rcol[i * 3 + 1] = (c[1] / 255) * b;
+        rcol[i * 3 + 2] = (c[2] / 255) * b;
       }
-      const ring = new THREE.Line(
-        new THREE.BufferGeometry().setFromPoints(pts),
-        new THREE.LineBasicMaterial({
-          color: 0xd4a95a, transparent: true, opacity: 0.42,
-          blending: THREE.AdditiveBlending, depthWrite: false,
-        })
-      );
+      const rgeo = new THREE.BufferGeometry();
+      rgeo.setAttribute('position', new THREE.BufferAttribute(rpos, 3));
+      rgeo.setAttribute('color', new THREE.BufferAttribute(rcol, 3));
+      const ring = new THREE.Points(rgeo, new THREE.PointsMaterial({
+        size: 1.3, sizeAttenuation: false, vertexColors: true,
+        transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
+      }));
+      ring.frustumCulled = false;
       pGroup.add(ring);
       haloRings.push(ring);
     }
@@ -453,7 +471,7 @@ export function createPlanetSystem(clients) {
         const match = !style || (p.data.styles ? p.data.styles.includes(style) : p.data.industry === style);
         p.dimmed = !match;
         p.layers.body.material.opacity = match ? 1 : 0.15;
-        for (const r of p.haloRings || []) r.material.opacity = match ? 0.42 : 0.08;
+        for (const r of p.haloRings || []) r.material.opacity = match ? 1 : 0.12;
       }
     },
 
