@@ -101,7 +101,7 @@ function cloudParamsFor(client) {
 
 // ---------- 大小映射资料丰富度:D 线性映射到 [Dmin, Dmax],Dmax = Dmin × 5 ----------
 // richness = story 条数×2 + (有 piece 3) + (有 plan 2) + elements(proposal 交付物总数)
-const RICH_DMIN = 3.2, RICH_DMAX = 11;   // 下限抬高:资料最薄的星也要有可读的体量(2026-07-26 卷反馈)
+const RICH_DMIN = 4.2, RICH_DMAX = 12;   // 2026-07-26 卷反馈:向定稿渲染图的体量靠——整体放大,最薄的星也有分量
 function richnessOf(c) {
   if (typeof c.richness === 'number') return c.richness; // 新模型:适配层按公开资料体量算好
   const elements = (c.proposal || []).reduce((n, p) => n + (p.deliverables ? p.deliverables.length : 0), 0);
@@ -200,10 +200,10 @@ export function createPlanetSystem(clients) {
     const haloSp = layerSprite(baseLayers.halo, 1.3);
     pGroup.add(bodySp, haloSp);
 
-    // ---------- 星球本体:真实发光球体(主色向暖白混 45%,明确带色相) ----------
+    // ---------- 星球本体:发光球体退居"一粒心脏"(2026-07-26 卷定调:点彩云是主体,核不抢戏) ----------
     const glowBase = new THREE.Color(cp.main[0] / 255, cp.main[1] / 255, cp.main[2] / 255)
       .lerp(new THREE.Color(WARM_WHITE[0] / 255, WARM_WHITE[1] / 255, WARM_WHITE[2] / 255), 0.45);
-    const sphereR = R * 0.09;
+    const sphereR = R * 0.05;
     const sphere = createGlowSphere(glowBase, sphereR);
     pGroup.add(sphere);
     // 两层薄辉光壳:1.15x / 1.45x,同色 BackSide(透明度随相机距离衰减)
