@@ -228,22 +228,31 @@ export function createPlanetSystem(clients) {
     // 配色随星走(主色/辅色为主,掺少量金砂),远看戴环的星即"回来过的人"
     const haloRings = [];
     for (let ri = 0; ri < (client.rings || 0); ri++) {
-      const rr = R * (1.22 + ri * 0.18);
-      const bandW = R * 0.08;                       // 环带半宽(高斯散布)
-      const N = 900;
+      // 贴星:环从星体边缘起步;每道光环由 4 股极细环丝构成,丝间留缝(土星环的纹路感)
+      const base = R * (0.98 + ri * 0.16);
+      const STRANDS = [
+        { off: -0.055, w: 0.010, den: 0.18, br: 0.75 },
+        { off: -0.018, w: 0.013, den: 0.34, br: 1.0 },
+        { off: 0.014, w: 0.011, den: 0.30, br: 0.9 },
+        { off: 0.052, w: 0.009, den: 0.18, br: 0.65 },
+      ];
+      const N = 1100;
       const rpos = new Float32Array(N * 3);
       const rcol = new Float32Array(N * 3);
       const rrand = mulberry32(client.colorSeed * 977 + ri * 131 + 29);
       const GOLD = [217, 192, 138];
       for (let i = 0; i < N; i++) {
+        // 按密度权重选一股环丝
+        let pickS = rrand(), s = STRANDS[0], acc = 0;
+        for (const st of STRANDS) { acc += st.den; if (pickS <= acc) { s = st; break; } }
         const a = rrand() * Math.PI * 2;
         const g = (rrand() + rrand() + rrand() + rrand() - 2) / 2;   // 近高斯 [-1, 1]
-        const rad = rr + g * bandW;
+        const rad = base + s.off * R + g * s.w * R;
         rpos[i * 3] = Math.cos(a) * rad;
-        rpos[i * 3 + 1] = (rrand() + rrand() - 1) * R * 0.015;       // 环面极薄
+        rpos[i * 3 + 1] = (rrand() + rrand() - 1) * R * 0.008;       // 环面极薄
         rpos[i * 3 + 2] = Math.sin(a) * rad;
-        const fall = Math.exp(-g * g * 2.2);                          // 带心 → 边缘渐暗
-        const b = (0.22 + rrand() * 0.45) * fall;
+        const fall = Math.exp(-g * g * 2.0);                          // 丝心 → 丝缘渐暗
+        const b = (0.2 + rrand() * 0.4) * fall * s.br;
         const pick = rrand();
         const c = pick < 0.55 ? cp.main : (pick < 0.85 ? cp.patches[0] : GOLD);
         rcol[i * 3] = (c[0] / 255) * b;
@@ -254,7 +263,7 @@ export function createPlanetSystem(clients) {
       rgeo.setAttribute('position', new THREE.BufferAttribute(rpos, 3));
       rgeo.setAttribute('color', new THREE.BufferAttribute(rcol, 3));
       const ring = new THREE.Points(rgeo, new THREE.PointsMaterial({
-        size: 1.3, sizeAttenuation: false, vertexColors: true,
+        size: 1.15, sizeAttenuation: false, vertexColors: true,
         transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
       }));
       ring.frustumCulled = false;
