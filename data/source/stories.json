@@ -3,139 +3,221 @@
     "id": "sty-2026-001",
     "systemId": "sys-guyi-chengnuo",
     "type": "wedding",
-    "year": 2026,
     "date": "2026-10-03",
     "season": "秋",
     "venueId": "ven-xintiantang",
     "credits": [
-      {
-        "partnerId": "par-zhangye-photo",
-        "role": "photographer"
-      },
-      {
-        "partnerId": "par-linyi-host",
-        "role": "host"
-      }
+      { "partnerId": "par-zhangye-photo", "role": "photographer" },
+      { "partnerId": "par-linyi-host", "role": "host" }
     ],
     "status": "done",
     "arctic": null,
     "public": {
       "theme": "星石",
       "tagline": "他们把第一次见面那晚的星空,刻在了一块石头上。",
-      "concept": "示例条目:概念阐述写这场婚礼的设计理念,克制、具体、有细节,不要营销腔。",
-      "style": [
-        "星空",
-        "自然野趣"
-      ],
-      "elements": [
-        "星石",
-        "手写信"
-      ],
+      "concept": "顾一记得那晚的猎户座,程诺记得他讲星座时结巴的样子。我们把那晚 21 点 15 分的星图做成了仪式区的穹顶,来宾抬头看到的,就是他们初见那晚的天空。",
+      "style": ["星空", "教堂古典"],
+      "elements": ["星石", "手写信"],
       "likes": 0
     },
-    "private": {
-      "domains": {
-        "venue": {
-          "note": ""
-        },
-        "story": [],
-        "process": [],
-        "visual": [],
-        "moment": {}
-      },
-      "piece": "示例条目:最终成篇全文(私密)。真实内容在权限系统上线前先不要提交到仓库,填素材位置即可。",
-      "plan": "示例条目:婚礼方案(私密)。同上。"
-    }
+    "private": { "domains": { "venue": { "note": "" }, "story": [], "process": [], "visual": [], "moment": {} }, "piece": "", "plan": "" }
   },
   {
     "id": "sty-2028-001",
     "systemId": "sys-guyi-chengnuo",
     "type": "anniversary",
-    "year": 2028,
     "date": "2028-01-16",
     "season": "冬",
     "venueId": "ven-banshan-lin",
-    "credits": [
-      {
-        "partnerId": "par-zhangye-photo",
-        "role": "photographer"
-      }
-    ],
+    "credits": [{ "partnerId": "par-zhangye-photo", "role": "photographer" }],
     "status": "ing",
     "arctic": null,
     "public": {
       "theme": "两年之后",
-      "tagline": "示例条目:同一对新人的第二段故事——星的外围会多一道金环。",
+      "tagline": "婚礼两年后,他们回到山里,给当年种下的树浇了水。",
       "concept": "",
-      "style": [
-        "冬"
-      ],
-      "elements": [],
+      "style": ["山野"],
+      "elements": ["一棵树"],
       "likes": 0
     },
-    "private": {
-      "domains": {
-        "venue": {
-          "note": ""
-        },
-        "story": [],
-        "process": [],
-        "visual": [],
-        "moment": {}
-      },
-      "piece": "",
-      "plan": ""
-    }
+    "private": { "domains": { "venue": { "note": "" }, "story": [], "process": [], "visual": [], "moment": {} }, "piece": "", "plan": "" }
   },
   {
     "id": "sty-2026-002",
     "systemId": "sys-shenhe-luwan",
     "type": "wedding",
-    "year": 2026,
     "date": "2026-04-11",
     "season": "春",
     "venueId": "ven-banshan-lin",
     "credits": [
-      {
-        "partnerId": "par-wumu-video",
-        "role": "videographer"
-      },
-      {
-        "partnerId": "par-linyi-host",
-        "role": "host"
-      }
+      { "partnerId": "par-wumu-video", "role": "videographer" },
+      { "partnerId": "par-linyi-host", "role": "host" }
     ],
     "status": "done",
-    "arctic": {
-      "year": 2026,
-      "note": "示例:入选北极计划的故事会点亮极光印记",
-      "filmUrl": ""
-    },
+    "arctic": { "year": 2026, "note": "首批入选北极计划的故事", "filmUrl": "" },
     "public": {
       "theme": "山中信",
-      "tagline": "示例条目:一句话说清这场婚礼最动人的那件事。",
-      "concept": "",
-      "style": [
-        "山野",
-        "书信"
-      ],
-      "elements": [
-        "手写信"
-      ],
+      "tagline": "异地五年,一百四十七封信。婚礼那天,信读到了第一百四十八封。",
+      "concept": "沈鹤在北方修桥,陆晚在南方教书。五年里他们把说不出口的话都写进了信。仪式的走道两侧,悬着这一百四十七封信的影印,新娘走过的,是他们走了五年的路。",
+      "style": ["山野", "书信手作"],
+      "elements": ["手写信", "老照片"],
       "likes": 0
     },
-    "private": {
-      "domains": {
-        "venue": {
-          "note": ""
-        },
-        "story": [],
-        "process": [],
-        "visual": [],
-        "moment": {}
-      },
-      "piece": "",
-      "plan": ""
-    }
+    "private": { "domains": { "venue": { "note": "" }, "story": [], "process": [], "visual": [], "moment": {} }, "piece": "", "plan": "" }
+  },
+  {
+    "id": "sty-2025-001",
+    "systemId": "sys-jiangxu-baitang",
+    "type": "wedding",
+    "date": "2025-09-20",
+    "season": "秋",
+    "venueId": "ven-laomatou",
+    "credits": [
+      { "partnerId": "par-shenxing-photo", "role": "photographer" },
+      { "partnerId": "par-ache-music", "role": "musician" }
+    ],
+    "status": "done",
+    "arctic": null,
+    "public": {
+      "theme": "放映厅",
+      "tagline": "在老仓库里,他们放了一部只有两个观众看得懂的电影。",
+      "concept": "",
+      "style": ["复古胶片"],
+      "elements": ["胶片放映", "黑胶"],
+      "likes": 0
+    },
+    "private": { "domains": { "venue": { "note": "" }, "story": [], "process": [], "visual": [], "moment": {} }, "piece": "", "plan": "" }
+  },
+  {
+    "id": "sty-2026-003",
+    "systemId": "sys-zhouye-xumai",
+    "type": "wedding",
+    "date": "2026-06-06",
+    "season": "夏",
+    "venueId": "ven-yunlanwan",
+    "credits": [
+      { "partnerId": "par-zhangye-photo", "role": "photographer" },
+      { "partnerId": "par-taozi-host", "role": "host" }
+    ],
+    "status": "done",
+    "arctic": null,
+    "public": {
+      "theme": "麦田",
+      "tagline": "许麦名字里的麦,是外婆家门口那一片。仪式就设在麦子黄的时候。",
+      "concept": "",
+      "style": ["自然野趣", "清透浅色"],
+      "elements": ["外婆的桌布", "干花"],
+      "likes": 0
+    },
+    "private": { "domains": { "venue": { "note": "" }, "story": [], "process": [], "visual": [], "moment": {} }, "piece": "", "plan": "" }
+  },
+  {
+    "id": "sty-2025-002",
+    "systemId": "sys-chenyu-xiazhi",
+    "type": "wedding",
+    "date": "2025-12-31",
+    "season": "冬",
+    "venueId": "ven-xintiantang",
+    "credits": [
+      { "partnerId": "par-wumu-video", "role": "videographer" },
+      { "partnerId": "par-taozi-host", "role": "host" }
+    ],
+    "status": "done",
+    "arctic": null,
+    "public": {
+      "theme": "跨年",
+      "tagline": "他们在一年的最后一分钟交换戒指,婚礼和新年一起开始。",
+      "concept": "",
+      "style": ["教堂古典", "现代极简"],
+      "elements": [],
+      "likes": 0
+    },
+    "private": { "domains": { "venue": { "note": "" }, "story": [], "process": [], "visual": [], "moment": {} }, "piece": "", "plan": "" }
+  },
+  {
+    "id": "sty-2027-001",
+    "systemId": "sys-hanqing-songzhiwei",
+    "type": "wedding",
+    "date": "2027-03-27",
+    "season": "春",
+    "venueId": "ven-yunlanwan",
+    "credits": [{ "partnerId": "par-shenxing-photo", "role": "photographer" }],
+    "status": "ing",
+    "arctic": null,
+    "public": {
+      "theme": "知微",
+      "tagline": "筹备中。他们想要一场小到只有十二个人的婚礼。",
+      "concept": "",
+      "style": ["庭园", "东方雅致"],
+      "elements": [],
+      "likes": 0
+    },
+    "private": { "domains": { "venue": { "note": "" }, "story": [], "process": [], "visual": [], "moment": {} }, "piece": "", "plan": "" }
+  },
+  {
+    "id": "sty-2027-002",
+    "systemId": "sys-fanghui-linjianqiu",
+    "type": "wedding",
+    "date": "2027-10-16",
+    "season": "秋",
+    "venueId": "ven-banshan-lin",
+    "credits": [
+      { "partnerId": "par-ache-music", "role": "musician" },
+      { "partnerId": "par-linyi-host", "role": "host" }
+    ],
+    "status": "ing",
+    "arctic": null,
+    "public": {
+      "theme": "见秋",
+      "tagline": "筹备中。他们相识在十月,想把婚礼也还给十月。",
+      "concept": "",
+      "style": ["山野", "音乐现场"],
+      "elements": [],
+      "likes": 0
+    },
+    "private": { "domains": { "venue": { "note": "" }, "story": [], "process": [], "visual": [], "moment": {} }, "piece": "", "plan": "" }
+  },
+  {
+    "id": "sty-2025-003",
+    "systemId": "sys-tangsong-ruanmian",
+    "type": "wedding",
+    "date": "2025-05-01",
+    "season": "春",
+    "venueId": "ven-laomatou",
+    "credits": [
+      { "partnerId": "par-zhangye-photo", "role": "photographer" },
+      { "partnerId": "par-ache-music", "role": "musician" }
+    ],
+    "status": "done",
+    "arctic": null,
+    "public": {
+      "theme": "眠歌",
+      "tagline": "阮眠失眠十年。唐宋写了一首只在她睡不着时唱的歌,婚礼上第一次唱给别人听。",
+      "concept": "",
+      "style": ["音乐现场", "复古胶片"],
+      "elements": ["黑胶"],
+      "likes": 0
+    },
+    "private": { "domains": { "venue": { "note": "" }, "story": [], "process": [], "visual": [], "moment": {} }, "piece": "", "plan": "" }
+  },
+  {
+    "id": "sty-2027-003",
+    "systemId": "sys-tangsong-ruanmian",
+    "type": "baby",
+    "date": "2027-08-08",
+    "season": "夏",
+    "venueId": "ven-yunlanwan",
+    "credits": [{ "partnerId": "par-shenxing-photo", "role": "photographer" }],
+    "status": "ing",
+    "arctic": null,
+    "public": {
+      "theme": "小名",
+      "tagline": "宝宝宴筹备中。小家伙的小名,取自他们第一次约会那天的歌。",
+      "concept": "",
+      "style": ["清透浅色"],
+      "elements": [],
+      "likes": 0
+    },
+    "private": { "domains": { "venue": { "note": "" }, "story": [], "process": [], "visual": [], "moment": {} }, "piece": "", "plan": "" }
   }
 ]

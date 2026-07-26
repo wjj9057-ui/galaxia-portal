@@ -392,6 +392,60 @@ html, body {
   color: #f7edd8;
 }
 .tl-text { color: #c9bda0; font-size: 13.5px; }
+.tl-concept { margin-top: 8px; color: #a89a7d; }
+.tl-tags { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; }
+.tl-tags span {
+  padding: 2px 9px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--hud-dim);
+  border: 1px solid rgba(212, 169, 90, 0.22);
+  border-radius: 999px;
+}
+.tl-credits { margin-top: 10px; font-size: 12px; color: var(--hud-dim); letter-spacing: 0.06em; }
+/* 北极印记:已被永久封存的故事 */
+.tl-arctic {
+  margin-top: 8px;
+  font-size: 11.5px;
+  letter-spacing: 0.14em;
+  color: #9fd8c8;
+}
+.pane-placeholder { color: var(--hud-dim); letter-spacing: 0.06em; }
+/* 档案页头部:星址 + 相识计时 */
+.detail-coord {
+  display: block;
+  margin-top: 8px;
+  font-family: "Didot", "Bodoni MT", Georgia, "Times New Roman", serif;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+}
+.detail-since { display: block; margin-top: 3px; font-size: 11px; color: var(--hud-dim); letter-spacing: 0.1em; }
+
+/* 内部层底部信息:星址 + 相识计时(安静的小字,不抢星球的戏) */
+#interior-info {
+  position: fixed;
+  left: 50%;
+  bottom: 66px;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 15;
+  pointer-events: none;
+}
+.ii-coord {
+  font-family: "Didot", "Bodoni MT", Georgia, "Times New Roman", serif;
+  font-size: 12px;
+  letter-spacing: 0.26em;
+  color: var(--accent);
+  opacity: 0.9;
+}
+.ii-since {
+  margin-top: 5px;
+  font-family: var(--serif);
+  font-size: 11.5px;
+  letter-spacing: 0.12em;
+  color: var(--hud-dim);
+}
 
 /* 成篇文章 */
 .article-title {
@@ -662,6 +716,23 @@ body.hud-hidden #year-nav { display: none !important; }
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+/* 星址:这颗星的专属坐标(由星位反推,终身不变) */
+.np-coord {
+  margin-top: 8px;
+  font-family: "Didot", "Bodoni MT", Georgia, "Times New Roman", serif;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+  opacity: 0.85;
+}
+/* 相识计时:metAt 驱动的永续滚动钟 */
+.np-since {
+  margin-top: 4px;
+  font-family: var(--serif);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--hud-dim);
 }
 .np-actions {
   margin-top: 12px;

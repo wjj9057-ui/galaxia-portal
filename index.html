@@ -32,11 +32,11 @@
     </div>
     <div class="hud-center">
       <div class="search-box">
-        <input id="search-input" type="text" placeholder="搜索客户 / 行业 / 关键词…" autocomplete="off" />
+        <input id="search-input" type="text" placeholder="搜索新人 / 场地 / 伙伴 / 风格…" autocomplete="off" />
         <div id="search-results" class="search-results hidden"></div>
       </div>
-      <select id="industry-filter" title="按行业筛选">
-        <option value="">全部行业</option>
+      <select id="industry-filter" title="按风格筛选">
+        <option value="">全部风格</option>
       </select>
     </div>
     <div class="hud-right">
@@ -77,9 +77,9 @@
         </div>
       </div>
       <div class="detail-tabs">
-        <button class="tab-btn active" data-tab="story">故事资料</button>
-        <button class="tab-btn" data-tab="article">最终成篇</button>
-        <button class="tab-btn" data-tab="proposal">服务方案</button>
+        <button class="tab-btn active" data-tab="story">故事</button>
+        <button class="tab-btn" data-tab="article">成篇</button>
+        <button class="tab-btn" data-tab="proposal">方案</button>
       </div>
       <div class="detail-body">
         <div id="tab-story" class="tab-pane"></div>
@@ -97,6 +97,8 @@
     <button id="np-close" title="取消选中(Esc)">×</button>
     <div class="np-name" id="np-name"></div>
     <div class="np-meta" id="np-meta"></div>
+    <div class="np-coord" id="np-coord" title="星址:这颗星在宇宙中的专属坐标"></div>
+    <div class="np-since" id="np-since"></div>
     <div class="np-actions">
       <button id="np-enter" class="np-btn-primary">进入星球 →</button>
       <button id="np-archive" class="np-btn-ghost">查看档案</button>
@@ -111,6 +113,12 @@
 
   <!-- 内部层返回按钮 -->
   <button id="interior-back" class="hidden" title="返回宇宙(Esc)">← 返回宇宙</button>
+
+  <!-- 内部层底部信息:星址 + 相识计时 -->
+  <div id="interior-info" class="hidden">
+    <div class="ii-coord" id="ii-coord" title="星址:这颗星在宇宙中的专属坐标"></div>
+    <div class="ii-since" id="ii-since"></div>
+  </div>
 
   <!-- 节点占位内容卡 -->
   <div id="node-card" class="hidden">

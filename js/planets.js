@@ -93,7 +93,8 @@ function cloudParamsFor(client) {
   return {
     main,
     patches,
-    ringed: rand() < 0.22,
+    // 多段故事的星必带环(回访的光环表达,蓝图映射规则);单故事星维持原随机率
+    ringed: (client.rings || 0) > 0 || rand() < 0.22,
     coreType: 'none',
     seed: client.colorSeed * 1009 + 7,
   };
@@ -103,6 +104,7 @@ function cloudParamsFor(client) {
 // richness = story 条数×2 + (有 piece 3) + (有 plan 2) + elements(proposal 交付物总数)
 const RICH_DMIN = 2.2, RICH_DMAX = 11;   // Dmax = Dmin × 5
 function richnessOf(c) {
+  if (typeof c.richness === 'number') return c.richness; // 新模型:适配层按公开资料体量算好
   const elements = (c.proposal || []).reduce((n, p) => n + (p.deliverables ? p.deliverables.length : 0), 0);
   return (c.story ? c.story.length * 2 : 0) + (c.article ? 3 : 0) + (c.proposal ? 2 : 0) + elements;
 }
@@ -424,10 +426,10 @@ export function createPlanetSystem(clients) {
       }
     },
 
-    // 行业筛选:不匹配的整体调暗
-    setFilter(industry) {
+    // 风格筛选:不匹配的整体调暗(styles 为新模型的风格标签数组,兼容旧 industry 字段)
+    setFilter(style) {
       for (const p of planets) {
-        const match = !industry || p.data.industry === industry;
+        const match = !style || (p.data.styles ? p.data.styles.includes(style) : p.data.industry === style);
         p.dimmed = !match;
         p.layers.body.material.opacity = match ? 1 : 0.15;
       }

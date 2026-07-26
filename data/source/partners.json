@@ -4,15 +4,15 @@
     "name": "张野",
     "role": "photographer",
     "roleLabel": "摄影",
-    "intro": "示例条目:伙伴一句话简介。",
+    "intro": "擅长在仪式的缝隙里,捕捉没人注意的瞬间。",
     "gallery": []
   },
   {
-    "id": "par-linyi-host",
-    "name": "林一",
-    "role": "host",
-    "roleLabel": "主持",
-    "intro": "示例条目。",
+    "id": "par-shenxing-photo",
+    "name": "沈星",
+    "role": "photographer",
+    "roleLabel": "摄影",
+    "intro": "拍人像十二年,最常说的一句话是「别看镜头」。",
     "gallery": []
   },
   {
@@ -20,7 +20,31 @@
     "name": "吴木",
     "role": "videographer",
     "roleLabel": "摄像",
-    "intro": "示例条目。",
+    "intro": "他的成片很少用慢镜头,他说真实的速度本身就动人。",
+    "gallery": []
+  },
+  {
+    "id": "par-linyi-host",
+    "name": "林一",
+    "role": "host",
+    "roleLabel": "主持",
+    "intro": "不念稿的主持人,仪式前会和新人聊到深夜。",
+    "gallery": []
+  },
+  {
+    "id": "par-taozi-host",
+    "name": "桃子",
+    "role": "host",
+    "roleLabel": "主持",
+    "intro": "声音温柔,控场极稳,哭点比新人还低。",
+    "gallery": []
+  },
+  {
+    "id": "par-ache-music",
+    "name": "阿澈",
+    "role": "musician",
+    "roleLabel": "乐手",
+    "intro": "吉他与人声,偶尔带一把大提琴来。",
     "gallery": []
   }
 ]

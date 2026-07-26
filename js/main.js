@@ -8,6 +8,7 @@ import { createDetailLayer } from './detail.js';
 import { createAudioEngine } from './audio.js';
 import { createInterior } from './interior.js';
 import { DEFAULT_PARAMS, loadSettings, saveSettings, createParamsPanel } from './params.js';
+import { loadUniverse, sinceLabel, starAddress } from './data.js';
 
 // ---------- 质量档 ----------
 const QUALITY = {
@@ -73,9 +74,10 @@ let postfx = null;
 let clients = [];
 
 async function boot() {
-  setLoading(20, '正在读取客户数据…');
-  const res = await fetch('data/clients.json');
-  clients = await res.json();
+  setLoading(20, '正在读取宇宙数据…');
+  // 数据层 v1.2:四集合公开层经适配层翻译为渲染层沿用的星数据
+  const universe = await loadUniverse();
+  clients = universe.clients;
 
   setLoading(45, '正在点亮星系…');
   galaxy = createGalaxy({ ...quality, starCount: params.starCount });
@@ -97,7 +99,7 @@ async function boot() {
   initYearNav();
   initGLRecovery();
 
-  document.getElementById('client-count').textContent = `${clients.length} 位客户`;
+  document.getElementById('client-count').textContent = `${clients.length} 对新人`;
 
   // 自动化钩子(Playwright 测试 / 外部脚本用)
   window.__galaxia = {
@@ -107,6 +109,7 @@ async function boot() {
       const p = planets.getPlanetById(id);
       if (!p) return;
       detailPlanet = p;
+      p.data.address = starAddress(p); // 档案页顶部展示星址
       detail.open(p.data);
     },
     gotoClient,
@@ -241,15 +244,25 @@ let selectedPlanet = null;
 let archiveFromPlate = false;
 const namePlate = document.getElementById('name-plate');
 
+let sinceTimer = null;
 function showNamePlate(p) {
   selectedPlanet = p;
   detailPlanet = p;
   document.getElementById('np-name').textContent = p.data.name;
-  document.getElementById('np-meta').textContent = `${p.data.industry} · ${p.data.tagline}`;
+  document.getElementById('np-meta').textContent = [p.data.styles.join(' · '), p.data.tagline].filter(Boolean).join(' — ');
+  // 星址(由星位反推,终身不变)+ 相识计时(metAt 驱动,每 10s 刷新滚动)
+  document.getElementById('np-coord').textContent = starAddress(p);
+  const elSince = document.getElementById('np-since');
+  const tick = () => { elSince.textContent = sinceLabel(p.data.metAt); };
+  tick();
+  clearInterval(sinceTimer);
+  sinceTimer = setInterval(tick, 10000);
   namePlate.classList.remove('hidden');
   requestAnimationFrame(() => namePlate.classList.add('on'));
 }
 function hideNamePlateVisual() {
+  clearInterval(sinceTimer);
+  sinceTimer = null;
   namePlate.classList.remove('on');
 }
 function deselect() {
@@ -265,6 +278,7 @@ document.getElementById('np-archive').addEventListener('click', () => {
   if (!selectedPlanet) return;
   archiveFromPlate = true;
   hideNamePlateVisual();
+  selectedPlanet.data.address = starAddress(selectedPlanet);
   detail.open(selectedPlanet.data);
 });
 document.getElementById('np-close').addEventListener('click', deselect);
@@ -363,12 +377,21 @@ function burstEnter(p, { skipRamp = false } = {}) {
   }, 500);
 }
 
+let interiorInfoTimer = null;
 function enterInteriorDirect(p) {
   interiorMode = true;
   // 收掉悬停名字牌:内部层中央不留大字,文字只出现在五域小星系上
   hoveredPlanet = null;
   planets.setHovered(null);
   labelEl.classList.remove('show');
+  // 底部一行安静的小字:星址 + 相识计时(计时每 10s 刷新,永不停止)
+  document.getElementById('ii-coord').textContent = starAddress(p);
+  const elSince = document.getElementById('ii-since');
+  const tickSince = () => { elSince.textContent = sinceLabel(p.data.metAt); };
+  tickSince();
+  clearInterval(interiorInfoTimer);
+  interiorInfoTimer = setInterval(tickSince, 10000);
+  document.getElementById('interior-info').classList.remove('hidden');
   controls.target.set(0, 0, 0);
   const fromDir = camera.position.clone().sub(p.group.position).normalize();
   const { ringR } = interior.open({
@@ -390,6 +413,9 @@ function exitInterior() {
     interior.close();
     interiorMode = false;
     closeNodeCard();
+    clearInterval(interiorInfoTimer);
+    interiorInfoTimer = null;
+    document.getElementById('interior-info').classList.add('hidden');
     interiorBack.classList.add('hidden');
     veil.classList.remove('on');
     // 相机回到该星系选中位(连贯进入的抵达位姿,无名牌)
@@ -628,28 +654,26 @@ function updateYearNavActive(dt) {
 
 // ---------- HUD:搜索 / 行业筛选 / 按钮 / 预设 ----------
 function initHUD() {
-  // 客户计数已填;行业下拉
-  const industries = [...new Set(clients.map((c) => c.industry))];
+  // 风格筛选下拉(词表制:风格标签的并集)
+  const styleSet = [...new Set(clients.flatMap((c) => c.styles))];
   const sel = document.getElementById('industry-filter');
-  industries.forEach((ind) => {
+  styleSet.forEach((s) => {
     const opt = document.createElement('option');
-    opt.value = ind; opt.textContent = ind;
+    opt.value = s; opt.textContent = s;
     sel.appendChild(opt);
   });
   sel.addEventListener('change', () => planets.setFilter(sel.value));
 
-  // 搜索
+  // 搜索:新人 / 场地 / 伙伴 / 风格 / 标签 通搜(searchText 由适配层汇总)
   const input = document.getElementById('search-input');
   const results = document.getElementById('search-results');
   function doSearch() {
     const q = input.value.trim().toLowerCase();
     if (!q) { results.classList.add('hidden'); return; }
-    const matched = clients.filter((c) =>
-      c.name.toLowerCase().includes(q) || c.industry.toLowerCase().includes(q) || c.tagline.toLowerCase().includes(q)
-    ).slice(0, 8);
+    const matched = clients.filter((c) => c.searchText.includes(q)).slice(0, 8);
     results.innerHTML = matched.length
-      ? matched.map((c) => `<div class="search-item" data-id="${c.id}"><span>${c.name}</span><span class="ind">${c.industry}</span></div>`).join('')
-      : '<div class="search-empty">没有匹配的客户星球</div>';
+      ? matched.map((c) => `<div class="search-item" data-id="${c.id}"><span>${c.name}</span><span class="ind">${c.styles[0] || ''}</span></div>`).join('')
+      : '<div class="search-empty">没有匹配的星</div>';
     results.classList.remove('hidden');
     results.querySelectorAll('.search-item').forEach((el) => {
       el.addEventListener('pointerdown', () => {

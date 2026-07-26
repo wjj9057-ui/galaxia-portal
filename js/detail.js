@@ -1,4 +1,7 @@
-// detail.js — 星球详情层:毛玻璃面板 + 三个页签,内容全部来自 clients.json
+// detail.js — 星球详情层(档案):毛玻璃面板 + 三个页签,内容来自数据层 v1.2 公开层
+// 页签:故事(每段故事一张卡:主题/婚期/场地/署名/概念) · 成篇(归档中占位) · 方案(私密占位)
+import { sinceLabel } from './data.js';
+
 export function createDetailLayer() {
   const layer = document.getElementById('detail-layer');
   const panel = document.getElementById('detail-panel');
@@ -21,30 +24,35 @@ export function createDetailLayer() {
     }[c]));
   }
 
-  function renderStory(client) {
-    const items = client.story.map((s) => `
+  const ROLE_LABEL = { photographer: '摄影', videographer: '摄像', host: '主持', musician: '乐手' };
+
+  function renderStories(client) {
+    const items = client.stories.map((st) => {
+      const when = st.date ? st.date.replaceAll('-', '.') : `${st.year}${st.season ? ' ' + st.season : ''}`;
+      const where = st.venue ? `${st.venue.name} · ${st.venue.city}` : '';
+      const credits = st.partners.map((p) => `${p.name}(${p.roleLabel || ROLE_LABEL[p.role] || p.role})`).join(' / ');
+      const tags = [...(st.public.style || []), ...(st.public.elements || [])];
+      const arctic = st.arctic ? `<div class="tl-arctic">已存入北极 · ${esc(st.arctic.year)}</div>` : '';
+      return `
       <div class="tl-item">
-        <div class="tl-year">${esc(s.year)}</div>
-        <div class="tl-title">${esc(s.title)}</div>
-        <div class="tl-text">${esc(s.text)}</div>
-      </div>`).join('');
+        <div class="tl-year">${esc(st.typeLabel)} · ${esc(when)}${where ? ' · ' + esc(where) : ''}</div>
+        <div class="tl-title">${esc(st.public.theme || '')}</div>
+        <div class="tl-text">${esc(st.public.tagline || '')}</div>
+        ${st.public.concept ? `<div class="tl-text tl-concept">${esc(st.public.concept)}</div>` : ''}
+        ${tags.length ? `<div class="tl-tags">${tags.map((t) => `<span>${esc(t)}</span>`).join('')}</div>` : ''}
+        ${credits ? `<div class="tl-credits">同行 · ${esc(credits)}</div>` : ''}
+        ${arctic}
+      </div>`;
+    }).join('');
     panes.story.innerHTML = `<div class="timeline">${items}</div>`;
   }
 
-  function renderArticle(client) {
-    const paras = client.article.body.map((p) => `<p class="article-p">${esc(p)}</p>`).join('');
-    panes.article.innerHTML = `<h2 class="article-title">${esc(client.article.title)}</h2>${paras}`;
+  function renderArticle() {
+    panes.article.innerHTML = '<p class="article-p pane-placeholder">最终成篇正在归档中,归档后在此处开卷。</p>';
   }
 
-  function renderProposal(client) {
-    panes.proposal.innerHTML = client.proposal.map((ph) => `
-      <div class="phase-card">
-        <div class="phase-head">
-          <div class="phase-name">${esc(ph.phase)}</div>
-          <div class="phase-duration">${esc(ph.duration)}</div>
-        </div>
-        <ul>${ph.deliverables.map((d) => `<li>${esc(d)}</li>`).join('')}</ul>
-      </div>`).join('');
+  function renderProposal() {
+    panes.proposal.innerHTML = '<p class="article-p pane-placeholder">方案属于两个人的私密内容,凭专属入口可见。</p>';
   }
 
   function switchTab(name) {
@@ -59,10 +67,16 @@ export function createDetailLayer() {
     open(client) {
       currentClient = client;
       elName.textContent = client.name;
-      elMeta.innerHTML = `<span class="ind-tag">${esc(client.industry)}</span><span>${esc(client.tagline)}</span>`;
-      renderStory(client);
-      renderArticle(client);
-      renderProposal(client);
+      const since = sinceLabel(client.metAt);
+      elMeta.innerHTML = [
+        client.styles && client.styles.length ? `<span class="ind-tag">${esc(client.styles.join(' · '))}</span>` : '',
+        client.tagline ? `<span>${esc(client.tagline)}</span>` : '',
+        client.address ? `<span class="detail-coord">${esc(client.address)}</span>` : '',
+        since ? `<span class="detail-since">${esc(since)}</span>` : '',
+      ].join('');
+      renderStories(client);
+      renderArticle();
+      renderProposal();
       switchTab('story');
       layer.classList.remove('hidden');
       // 下一帧再加 open 类,触发 CSS 过渡
