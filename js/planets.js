@@ -101,7 +101,7 @@ function cloudParamsFor(client) {
 
 // ---------- 大小映射资料丰富度:D 线性映射到 [Dmin, Dmax],Dmax = Dmin × 5 ----------
 // richness = story 条数×2 + (有 piece 3) + (有 plan 2) + elements(proposal 交付物总数)
-const RICH_DMIN = 2.2, RICH_DMAX = 11;   // Dmax = Dmin × 5
+const RICH_DMIN = 3.2, RICH_DMAX = 11;   // 下限抬高:资料最薄的星也要有可读的体量(2026-07-26 卷反馈)
 function richnessOf(c) {
   if (typeof c.richness === 'number') return c.richness; // 新模型:适配层按公开资料体量算好
   const elements = (c.proposal || []).reduce((n, p) => n + (p.deliverables ? p.deliverables.length : 0), 0);

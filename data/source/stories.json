@@ -81,7 +81,7 @@
     "public": {
       "theme": "放映厅",
       "tagline": "在老仓库里,他们放了一部只有两个观众看得懂的电影。",
-      "concept": "",
+      "concept": "影片是我们剪的:七年里两个人手机里的碎片,竖屏、糊焦、手抖,全都保留。放到第十四分钟,全场安静得能听见胶片过卷的声音。",
       "style": ["复古胶片"],
       "elements": ["胶片放映", "黑胶"],
       "likes": 0
@@ -104,7 +104,7 @@
     "public": {
       "theme": "麦田",
       "tagline": "许麦名字里的麦,是外婆家门口那一片。仪式就设在麦子黄的时候。",
-      "concept": "",
+      "concept": "桌布是外婆用了三十年的那一块,我们照着它的纹样又织了十二块。麦浪是现成的布置,风负责所有的动效。",
       "style": ["自然野趣", "清透浅色"],
       "elements": ["外婆的桌布", "干花"],
       "likes": 0
@@ -127,7 +127,7 @@
     "public": {
       "theme": "跨年",
       "tagline": "他们在一年的最后一分钟交换戒指,婚礼和新年一起开始。",
-      "concept": "",
+      "concept": "整场仪式是一次倒计时。23:59,教堂熄灯一分钟,只留两个人的声音;零点钟声落下,灯光和新年一起亮起来。",
       "style": ["教堂古典", "现代极简"],
       "elements": [],
       "likes": 0
@@ -193,7 +193,7 @@
     "public": {
       "theme": "眠歌",
       "tagline": "阮眠失眠十年。唐宋写了一首只在她睡不着时唱的歌,婚礼上第一次唱给别人听。",
-      "concept": "",
+      "concept": "那首歌没有名字,请柬上只印了它的第一小节曲谱。晚宴的尾声灯光压到最低,唐宋唱完,全场没有人鼓掌——这是我们排练过的:让安静把歌接住。",
       "style": ["音乐现场", "复古胶片"],
       "elements": ["黑胶"],
       "likes": 0
@@ -216,6 +216,188 @@
       "concept": "",
       "style": ["清透浅色"],
       "elements": [],
+      "likes": 0
+    },
+    "private": { "domains": { "venue": { "note": "" }, "story": [], "process": [], "visual": [], "moment": {} }, "piece": "", "plan": "" }
+  },
+  {
+    "id": "sty-2025-004",
+    "systemId": "sys-luchuan-jiangwan",
+    "type": "wedding",
+    "date": "2025-10-25",
+    "season": "秋",
+    "venueId": "ven-laomatou",
+    "credits": [
+      { "partnerId": "par-zhangye-photo", "role": "photographer" },
+      { "partnerId": "par-taozi-host", "role": "host" },
+      { "partnerId": "par-ache-music", "role": "musician" }
+    ],
+    "status": "done",
+    "arctic": null,
+    "public": {
+      "theme": "火把",
+      "tagline": "他们在川西徒步时靠一支火把走出过浓雾,婚礼的主色就是那晚的火光。",
+      "concept": "绯红不是喜庆的红,是火把的红。仪式尾声,来宾每人举起一支小小的灯,从场地深处一路亮到门口——他们说,想把当年那条路,反过来走给所有人看。",
+      "style": ["热烈浓彩", "音乐现场"],
+      "elements": ["火把", "手写信"],
+      "likes": 0
+    },
+    "private": { "domains": { "venue": { "note": "" }, "story": [], "process": [], "visual": [], "moment": {} }, "piece": "", "plan": "" }
+  },
+  {
+    "id": "sty-2026-004",
+    "systemId": "sys-susong-heye",
+    "type": "wedding",
+    "date": "2026-05-16",
+    "season": "春",
+    "venueId": "ven-yunlanwan",
+    "credits": [
+      { "partnerId": "par-shenxing-photo", "role": "photographer" },
+      { "partnerId": "par-linyi-host", "role": "host" }
+    ],
+    "status": "done",
+    "arctic": null,
+    "public": {
+      "theme": "借园",
+      "tagline": "何叶的外公是园林修复师,这座园子他修了半生。婚礼那天,园子第一次为自家孩子开门。",
+      "concept": "我们没有在园子里加任何多余的布置,只是把外公修复手稿里的批注放大,悬在回廊。风一吹,纸页响,像老人在场。",
+      "style": ["庭园", "东方雅致"],
+      "elements": ["修复手稿", "老照片"],
+      "likes": 0
+    },
+    "private": { "domains": { "venue": { "note": "" }, "story": [], "process": [], "visual": [], "moment": {} }, "piece": "", "plan": "" }
+  },
+  {
+    "id": "sty-2026-005",
+    "systemId": "sys-duanmu-shenning",
+    "type": "wedding",
+    "date": "2026-09-12",
+    "season": "秋",
+    "venueId": "ven-xintiantang",
+    "credits": [
+      { "partnerId": "par-wumu-video", "role": "videographer" },
+      { "partnerId": "par-linyi-host", "role": "host" }
+    ],
+    "status": "done",
+    "arctic": null,
+    "public": {
+      "theme": "灯塔",
+      "tagline": "段牧跑远洋船七年,沈宁在岸上等了七年。教堂高窗的光,是他们的灯塔。",
+      "concept": "黛青取自深夜的海,杏金取自灯塔的光。仪式从暗到亮:开场只有一束光落在走道尽头,像海上望见的第一盏灯。",
+      "style": ["教堂古典"],
+      "elements": ["航海日志", "灯"],
+      "likes": 0
+    },
+    "private": { "domains": { "venue": { "note": "" }, "story": [], "process": [], "visual": [], "moment": {} }, "piece": "", "plan": "" }
+  },
+  {
+    "id": "sty-2025-005",
+    "systemId": "sys-jiyan-wenshu",
+    "type": "wedding",
+    "date": "2025-06-21",
+    "season": "夏",
+    "venueId": "ven-banshan-lin",
+    "credits": [
+      { "partnerId": "par-zhangye-photo", "role": "photographer" },
+      { "partnerId": "par-taozi-host", "role": "host" }
+    ],
+    "status": "done",
+    "arctic": { "year": 2025, "note": "首批入选北极计划的故事", "filmUrl": "" },
+    "public": {
+      "theme": "夏至",
+      "tagline": "他们在一年里白昼最长的那天结婚,理由是「舍不得这一天早点结束」。",
+      "concept": "全场只用自然光。仪式跟着太阳走:誓言在树影最短的正午,晚宴的最后一杯酒,敬给那天最后一缕光。",
+      "style": ["山野", "自然野趣"],
+      "elements": ["日晷", "一棵树"],
+      "likes": 0
+    },
+    "private": { "domains": { "venue": { "note": "" }, "story": [], "process": [], "visual": [], "moment": {} }, "piece": "", "plan": "" }
+  },
+  {
+    "id": "sty-2027-004",
+    "systemId": "sys-jiyan-wenshu",
+    "type": "anniversary",
+    "date": "2027-06-21",
+    "season": "夏",
+    "venueId": "ven-banshan-lin",
+    "credits": [{ "partnerId": "par-zhangye-photo", "role": "photographer" }],
+    "status": "ing",
+    "arctic": null,
+    "public": {
+      "theme": "第二个夏至",
+      "tagline": "两年之约:每个夏至回山里看那棵树。",
+      "concept": "",
+      "style": ["山野"],
+      "elements": ["一棵树"],
+      "likes": 0
+    },
+    "private": { "domains": { "venue": { "note": "" }, "story": [], "process": [], "visual": [], "moment": {} }, "piece": "", "plan": "" }
+  },
+  {
+    "id": "sty-2026-006",
+    "systemId": "sys-chengfei-luoyin",
+    "type": "wedding",
+    "date": "2026-11-07",
+    "season": "秋",
+    "venueId": "ven-laomatou",
+    "credits": [
+      { "partnerId": "par-ache-music", "role": "musician" },
+      { "partnerId": "par-shenxing-photo", "role": "photographer" }
+    ],
+    "status": "done",
+    "arctic": null,
+    "public": {
+      "theme": "耳返",
+      "tagline": "程飞是调音师,洛因是主唱。八年里他一直在她的耳返里,这次换他站上台。",
+      "concept": "舞台反转:乐队在台下,新人在台上。程飞第一次摘下监听耳机,把调好的每一轨,当面唱给她听。",
+      "style": ["音乐现场", "复古胶片"],
+      "elements": ["黑胶", "耳返"],
+      "likes": 0
+    },
+    "private": { "domains": { "venue": { "note": "" }, "story": [], "process": [], "visual": [], "moment": {} }, "piece": "", "plan": "" }
+  },
+  {
+    "id": "sty-2027-005",
+    "systemId": "sys-guanshan-yueming",
+    "type": "wedding",
+    "date": "2027-05-22",
+    "season": "春",
+    "venueId": "ven-banshan-lin",
+    "credits": [
+      { "partnerId": "par-wumu-video", "role": "videographer" },
+      { "partnerId": "par-taozi-host", "role": "host" }
+    ],
+    "status": "ing",
+    "arctic": null,
+    "public": {
+      "theme": "垭口",
+      "tagline": "筹备中。他们相识在海拔四千六的垭口,想把婚礼办在能看见山的地方。",
+      "concept": "",
+      "style": ["山野", "自然野趣"],
+      "elements": ["经幡", "登山绳"],
+      "likes": 0
+    },
+    "private": { "domains": { "venue": { "note": "" }, "story": [], "process": [], "visual": [], "moment": {} }, "piece": "", "plan": "" }
+  },
+  {
+    "id": "sty-2026-007",
+    "systemId": "sys-baiwu-linlang",
+    "type": "wedding",
+    "date": "2026-12-12",
+    "season": "冬",
+    "venueId": "ven-xintiantang",
+    "credits": [
+      { "partnerId": "par-shenxing-photo", "role": "photographer" },
+      { "partnerId": "par-linyi-host", "role": "host" }
+    ],
+    "status": "done",
+    "arctic": null,
+    "public": {
+      "theme": "初雪",
+      "tagline": "白雾说,她最喜欢下雪前那种安静。婚礼那天,上海真的落了初雪。",
+      "concept": "雾蓝与米金,是雪前天色与室内灯光的关系。所有布置都做「将落未落」:悬而未坠的白纱,似开未开的花。",
+      "style": ["清透浅色", "现代极简"],
+      "elements": ["白纱", "干花"],
       "likes": 0
     },
     "private": { "domains": { "venue": { "note": "" }, "story": [], "process": [], "visual": [], "moment": {} }, "piece": "", "plan": "" }

@@ -31,6 +31,34 @@
     {
       "id": "sys-tangsong-ruanmian",
       "internalNames": "示例数据"
+    },
+    {
+      "id": "sys-luchuan-jiangwan",
+      "internalNames": "示例数据"
+    },
+    {
+      "id": "sys-susong-heye",
+      "internalNames": "示例数据"
+    },
+    {
+      "id": "sys-duanmu-shenning",
+      "internalNames": "示例数据"
+    },
+    {
+      "id": "sys-jiyan-wenshu",
+      "internalNames": "示例数据"
+    },
+    {
+      "id": "sys-chengfei-luoyin",
+      "internalNames": "示例数据"
+    },
+    {
+      "id": "sys-guanshan-yueming",
+      "internalNames": "示例数据"
+    },
+    {
+      "id": "sys-baiwu-linlang",
+      "internalNames": "示例数据"
     }
   ],
   "stories": [
@@ -180,6 +208,134 @@
     },
     {
       "id": "sty-2027-003",
+      "private": {
+        "domains": {
+          "venue": {
+            "note": ""
+          },
+          "story": [],
+          "process": [],
+          "visual": [],
+          "moment": {}
+        },
+        "piece": "",
+        "plan": ""
+      }
+    },
+    {
+      "id": "sty-2025-004",
+      "private": {
+        "domains": {
+          "venue": {
+            "note": ""
+          },
+          "story": [],
+          "process": [],
+          "visual": [],
+          "moment": {}
+        },
+        "piece": "",
+        "plan": ""
+      }
+    },
+    {
+      "id": "sty-2026-004",
+      "private": {
+        "domains": {
+          "venue": {
+            "note": ""
+          },
+          "story": [],
+          "process": [],
+          "visual": [],
+          "moment": {}
+        },
+        "piece": "",
+        "plan": ""
+      }
+    },
+    {
+      "id": "sty-2026-005",
+      "private": {
+        "domains": {
+          "venue": {
+            "note": ""
+          },
+          "story": [],
+          "process": [],
+          "visual": [],
+          "moment": {}
+        },
+        "piece": "",
+        "plan": ""
+      }
+    },
+    {
+      "id": "sty-2025-005",
+      "private": {
+        "domains": {
+          "venue": {
+            "note": ""
+          },
+          "story": [],
+          "process": [],
+          "visual": [],
+          "moment": {}
+        },
+        "piece": "",
+        "plan": ""
+      }
+    },
+    {
+      "id": "sty-2027-004",
+      "private": {
+        "domains": {
+          "venue": {
+            "note": ""
+          },
+          "story": [],
+          "process": [],
+          "visual": [],
+          "moment": {}
+        },
+        "piece": "",
+        "plan": ""
+      }
+    },
+    {
+      "id": "sty-2026-006",
+      "private": {
+        "domains": {
+          "venue": {
+            "note": ""
+          },
+          "story": [],
+          "process": [],
+          "visual": [],
+          "moment": {}
+        },
+        "piece": "",
+        "plan": ""
+      }
+    },
+    {
+      "id": "sty-2027-005",
+      "private": {
+        "domains": {
+          "venue": {
+            "note": ""
+          },
+          "story": [],
+          "process": [],
+          "visual": [],
+          "moment": {}
+        },
+        "piece": "",
+        "plan": ""
+      }
+    },
+    {
+      "id": "sty-2026-007",
       "private": {
         "domains": {
           "venue": {
