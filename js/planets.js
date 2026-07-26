@@ -233,7 +233,7 @@ export function createPlanetSystem(clients) {
       // 窄带贴星:内缘几乎贴住发光星体的视觉边缘;每道环窄,回访多了向外一道道叠加也不喧宾夺主
       const inner = R * (0.5 + ri * 0.3);
       const bandSpan = R * 0.22;
-      const N = 2400;
+      const N = 1600;   // 环是星的配饰不是主体:粒子稀一档、暗一档
       const rpos = new Float32Array(N * 3);
       const rcol = new Float32Array(N * 3);
       const rrand = mulberry32(client.colorSeed * 977 + ri * 131 + 29);
@@ -252,7 +252,7 @@ export function createPlanetSystem(clients) {
                      * (0.7 + 0.3 * Math.sin(t * Math.PI * 2 * 8 + ph2));
         const edge = Math.pow(Math.sin(Math.min(1, Math.max(0.001, t)) * Math.PI), 0.55);
         const gap = 1 - 0.85 * Math.exp(-((t - gapT) * (t - gapT)) / 0.0014);
-        const b = (0.34 + rrand() * 0.5) * groove * edge * gap;
+        const b = (0.14 + rrand() * 0.22) * groove * edge * gap;
         const pick = rrand();
         const c = pick < 0.55 ? cp.main : (pick < 0.85 ? cp.patches[0] : GOLD);
         rcol[i * 3] = (c[0] / 255) * b;
@@ -263,7 +263,7 @@ export function createPlanetSystem(clients) {
       rgeo.setAttribute('position', new THREE.BufferAttribute(rpos, 3));
       rgeo.setAttribute('color', new THREE.BufferAttribute(rcol, 3));
       const ring = new THREE.Points(rgeo, new THREE.PointsMaterial({
-        size: 1.25, sizeAttenuation: false, vertexColors: true,
+        size: 1.0, sizeAttenuation: false, vertexColors: true,
         transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
       }));
       ring.frustumCulled = false;
