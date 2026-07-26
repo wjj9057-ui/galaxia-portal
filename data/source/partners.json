@@ -1,0 +1,26 @@
+[
+  {
+    "id": "par-zhangye-photo",
+    "name": "张野",
+    "role": "photographer",
+    "roleLabel": "摄影",
+    "intro": "示例条目:伙伴一句话简介。",
+    "gallery": []
+  },
+  {
+    "id": "par-linyi-host",
+    "name": "林一",
+    "role": "host",
+    "roleLabel": "主持",
+    "intro": "示例条目。",
+    "gallery": []
+  },
+  {
+    "id": "par-wumu-video",
+    "name": "吴木",
+    "role": "videographer",
+    "roleLabel": "摄像",
+    "intro": "示例条目。",
+    "gallery": []
+  }
+]

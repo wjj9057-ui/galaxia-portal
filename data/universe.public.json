@@ -1,0 +1,191 @@
+{
+  "builtAt": null,
+  "systems": [
+    {
+      "id": "sys-guyi-chengnuo",
+      "publicNames": "顾一 与 程诺",
+      "colors": {
+        "primary": "#8B5CF6",
+        "secondary": "#D9C08A"
+      },
+      "metAt": "2023-11-02T20:15:00+08:00",
+      "storyIds": [
+        "sty-2026-001",
+        "sty-2028-001"
+      ]
+    },
+    {
+      "id": "sys-shenhe-luwan",
+      "publicNames": "沈鹤 与 陆晚",
+      "colors": {
+        "primary": "#2E6F5E",
+        "secondary": "#E8C98A"
+      },
+      "metAt": "2024-03-18T14:00:00+08:00",
+      "storyIds": [
+        "sty-2026-002"
+      ]
+    }
+  ],
+  "stories": [
+    {
+      "id": "sty-2026-001",
+      "systemId": "sys-guyi-chengnuo",
+      "type": "wedding",
+      "year": 2026,
+      "season": "秋",
+      "venueId": "ven-xintiantang",
+      "credits": [
+        {
+          "partnerId": "par-zhangye-photo",
+          "role": "photographer"
+        },
+        {
+          "partnerId": "par-linyi-host",
+          "role": "host"
+        }
+      ],
+      "status": "done",
+      "arctic": null,
+      "public": {
+        "theme": "星石",
+        "tagline": "他们把第一次见面那晚的星空,刻在了一块石头上。",
+        "concept": "示例条目:概念阐述写这场婚礼的设计理念,克制、具体、有细节,不要营销腔。",
+        "style": [
+          "星空",
+          "自然野趣"
+        ],
+        "elements": [
+          "星石",
+          "手写信"
+        ],
+        "likes": 0
+      }
+    },
+    {
+      "id": "sty-2028-001",
+      "systemId": "sys-guyi-chengnuo",
+      "type": "anniversary",
+      "year": 2028,
+      "season": "冬",
+      "venueId": "ven-banshan-lin",
+      "credits": [
+        {
+          "partnerId": "par-zhangye-photo",
+          "role": "photographer"
+        }
+      ],
+      "status": "ing",
+      "arctic": null,
+      "public": {
+        "theme": "两年之后",
+        "tagline": "示例条目:同一对新人的第二段故事——星的外围会多一道金环。",
+        "concept": "",
+        "style": [
+          "冬"
+        ],
+        "elements": [],
+        "likes": 0
+      }
+    },
+    {
+      "id": "sty-2026-002",
+      "systemId": "sys-shenhe-luwan",
+      "type": "wedding",
+      "year": 2026,
+      "season": "春",
+      "venueId": "ven-banshan-lin",
+      "credits": [
+        {
+          "partnerId": "par-wumu-video",
+          "role": "videographer"
+        },
+        {
+          "partnerId": "par-linyi-host",
+          "role": "host"
+        }
+      ],
+      "status": "done",
+      "arctic": {
+        "year": 2026,
+        "note": "示例:入选北极计划的故事会点亮极光印记",
+        "filmUrl": ""
+      },
+      "public": {
+        "theme": "山中信",
+        "tagline": "示例条目:一句话说清这场婚礼最动人的那件事。",
+        "concept": "",
+        "style": [
+          "山野",
+          "书信"
+        ],
+        "elements": [
+          "手写信"
+        ],
+        "likes": 0
+      }
+    }
+  ],
+  "venues": [
+    {
+      "id": "ven-xintiantang",
+      "name": "新天安堂",
+      "city": "上海",
+      "intro": "示例条目:场地一句话简介。",
+      "gallery": [],
+      "designNotes": "示例条目:我们在此的设计沉淀。",
+      "storyIds": [
+        "sty-2026-001"
+      ]
+    },
+    {
+      "id": "ven-banshan-lin",
+      "name": "半山林",
+      "city": "杭州",
+      "intro": "示例条目。",
+      "gallery": [],
+      "designNotes": "",
+      "storyIds": [
+        "sty-2026-002",
+        "sty-2028-001"
+      ]
+    }
+  ],
+  "partners": [
+    {
+      "id": "par-zhangye-photo",
+      "name": "张野",
+      "role": "photographer",
+      "roleLabel": "摄影",
+      "intro": "示例条目:伙伴一句话简介。",
+      "gallery": [],
+      "storyIds": [
+        "sty-2026-001",
+        "sty-2028-001"
+      ]
+    },
+    {
+      "id": "par-linyi-host",
+      "name": "林一",
+      "role": "host",
+      "roleLabel": "主持",
+      "intro": "示例条目。",
+      "gallery": [],
+      "storyIds": [
+        "sty-2026-001",
+        "sty-2026-002"
+      ]
+    },
+    {
+      "id": "par-wumu-video",
+      "name": "吴木",
+      "role": "videographer",
+      "roleLabel": "摄像",
+      "intro": "示例条目。",
+      "gallery": [],
+      "storyIds": [
+        "sty-2026-002"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "id": "sys-guyi-chengnuo",
+    "publicNames": "顾一 与 程诺",
+    "internalNames": "示例条目:真实姓名仅内部使用,绝不出现在公开层",
+    "colors": { "primary": "#8B5CF6", "secondary": "#D9C08A" },
+    "metAt": "2023-11-02T20:15:00+08:00"
+  },
+  {
+    "id": "sys-shenhe-luwan",
+    "publicNames": "沈鹤 与 陆晚",
+    "internalNames": "示例条目",
+    "colors": { "primary": "#2E6F5E", "secondary": "#E8C98A" },
+    "metAt": "2024-03-18T14:00:00+08:00"
+  }
+]

@@ -1,0 +1,62 @@
+{
+  "systems": [
+    {
+      "id": "sys-guyi-chengnuo",
+      "internalNames": "示例条目:真实姓名仅内部使用,绝不出现在公开层"
+    },
+    {
+      "id": "sys-shenhe-luwan",
+      "internalNames": "示例条目"
+    }
+  ],
+  "stories": [
+    {
+      "id": "sty-2026-001",
+      "private": {
+        "domains": {
+          "venue": {
+            "note": ""
+          },
+          "story": [],
+          "process": [],
+          "visual": [],
+          "moment": {}
+        },
+        "piece": "示例条目:最终成篇全文(私密)。真实内容在权限系统上线前先不要提交到仓库,填素材位置即可。",
+        "plan": "示例条目:婚礼方案(私密)。同上。"
+      }
+    },
+    {
+      "id": "sty-2028-001",
+      "private": {
+        "domains": {
+          "venue": {
+            "note": ""
+          },
+          "story": [],
+          "process": [],
+          "visual": [],
+          "moment": {}
+        },
+        "piece": "",
+        "plan": ""
+      }
+    },
+    {
+      "id": "sty-2026-002",
+      "private": {
+        "domains": {
+          "venue": {
+            "note": ""
+          },
+          "story": [],
+          "process": [],
+          "visual": [],
+          "moment": {}
+        },
+        "piece": "",
+        "plan": ""
+      }
+    }
+  ]
+}

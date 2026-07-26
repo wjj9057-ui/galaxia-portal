@@ -1,0 +1,88 @@
+[
+  {
+    "id": "sty-2026-001",
+    "systemId": "sys-guyi-chengnuo",
+    "type": "wedding",
+    "year": 2026,
+    "season": "秋",
+    "venueId": "ven-xintiantang",
+    "credits": [
+      { "partnerId": "par-zhangye-photo", "role": "photographer" },
+      { "partnerId": "par-linyi-host", "role": "host" }
+    ],
+    "status": "done",
+    "arctic": null,
+    "public": {
+      "theme": "星石",
+      "tagline": "他们把第一次见面那晚的星空,刻在了一块石头上。",
+      "concept": "示例条目:概念阐述写这场婚礼的设计理念,克制、具体、有细节,不要营销腔。",
+      "style": ["星空", "自然野趣"],
+      "elements": ["星石", "手写信"],
+      "likes": 0
+    },
+    "private": {
+      "domains": {
+        "venue": { "note": "" },
+        "story": [],
+        "process": [],
+        "visual": [],
+        "moment": {}
+      },
+      "piece": "示例条目:最终成篇全文(私密)。真实内容在权限系统上线前先不要提交到仓库,填素材位置即可。",
+      "plan": "示例条目:婚礼方案(私密)。同上。"
+    }
+  },
+  {
+    "id": "sty-2028-001",
+    "systemId": "sys-guyi-chengnuo",
+    "type": "anniversary",
+    "year": 2028,
+    "season": "冬",
+    "venueId": "ven-banshan-lin",
+    "credits": [
+      { "partnerId": "par-zhangye-photo", "role": "photographer" }
+    ],
+    "status": "ing",
+    "arctic": null,
+    "public": {
+      "theme": "两年之后",
+      "tagline": "示例条目:同一对新人的第二段故事——星的外围会多一道金环。",
+      "concept": "",
+      "style": ["冬"],
+      "elements": [],
+      "likes": 0
+    },
+    "private": {
+      "domains": { "venue": { "note": "" }, "story": [], "process": [], "visual": [], "moment": {} },
+      "piece": "",
+      "plan": ""
+    }
+  },
+  {
+    "id": "sty-2026-002",
+    "systemId": "sys-shenhe-luwan",
+    "type": "wedding",
+    "year": 2026,
+    "season": "春",
+    "venueId": "ven-banshan-lin",
+    "credits": [
+      { "partnerId": "par-wumu-video", "role": "videographer" },
+      { "partnerId": "par-linyi-host", "role": "host" }
+    ],
+    "status": "done",
+    "arctic": { "year": 2026, "note": "示例:入选北极计划的故事会点亮极光印记", "filmUrl": "" },
+    "public": {
+      "theme": "山中信",
+      "tagline": "示例条目:一句话说清这场婚礼最动人的那件事。",
+      "concept": "",
+      "style": ["山野", "书信"],
+      "elements": ["手写信"],
+      "likes": 0
+    },
+    "private": {
+      "domains": { "venue": { "note": "" }, "story": [], "process": [], "visual": [], "moment": {} },
+      "piece": "",
+      "plan": ""
+    }
+  }
+]

@@ -1,0 +1,18 @@
+[
+  {
+    "id": "ven-xintiantang",
+    "name": "新天安堂",
+    "city": "上海",
+    "intro": "示例条目:场地一句话简介。",
+    "gallery": [],
+    "designNotes": "示例条目:我们在此的设计沉淀。"
+  },
+  {
+    "id": "ven-banshan-lin",
+    "name": "半山林",
+    "city": "杭州",
+    "intro": "示例条目。",
+    "gallery": [],
+    "designNotes": ""
+  }
+]
