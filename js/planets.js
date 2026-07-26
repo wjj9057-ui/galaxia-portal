@@ -93,7 +93,8 @@ function cloudParamsFor(client) {
   return {
     main,
     patches,
-    ringed: rand() < 0.22,   // 贴图浓彩环维持原随机率;回访光环另以细金环表达(见 createPlanetSystem)
+    // 多段故事的星必带环(回访的光环表达,蓝图映射规则);单故事星维持原随机率
+    ringed: (client.rings || 0) > 0 || rand() < 0.22,
     coreType: 'none',
     seed: client.colorSeed * 1009 + 7,
   };
@@ -101,7 +102,7 @@ function cloudParamsFor(client) {
 
 // ---------- 大小映射资料丰富度:D 线性映射到 [Dmin, Dmax],Dmax = Dmin × 5 ----------
 // richness = story 条数×2 + (有 piece 3) + (有 plan 2) + elements(proposal 交付物总数)
-const RICH_DMIN = 4.2, RICH_DMAX = 12;   // 2026-07-26 卷反馈:向定稿渲染图的体量靠——整体放大,最薄的星也有分量
+const RICH_DMIN = 2.2, RICH_DMAX = 11;   // Dmax = Dmin × 5
 function richnessOf(c) {
   if (typeof c.richness === 'number') return c.richness; // 新模型:适配层按公开资料体量算好
   const elements = (c.proposal || []).reduce((n, p) => n + (p.deliverables ? p.deliverables.length : 0), 0);
@@ -200,10 +201,10 @@ export function createPlanetSystem(clients) {
     const haloSp = layerSprite(baseLayers.halo, 1.3);
     pGroup.add(bodySp, haloSp);
 
-    // ---------- 星球本体:发光球体退居"一粒心脏"(2026-07-26 卷定调:点彩云是主体,核不抢戏) ----------
+    // ---------- 星球本体:真实发光球体(主色向暖白混 45%,明确带色相) ----------
     const glowBase = new THREE.Color(cp.main[0] / 255, cp.main[1] / 255, cp.main[2] / 255)
       .lerp(new THREE.Color(WARM_WHITE[0] / 255, WARM_WHITE[1] / 255, WARM_WHITE[2] / 255), 0.45);
-    const sphereR = R * 0.05;
+    const sphereR = R * 0.09;
     const sphere = createGlowSphere(glowBase, sphereR);
     pGroup.add(sphere);
     // 两层薄辉光壳:1.15x / 1.45x,同色 BackSide(透明度随相机距离衰减)
@@ -223,54 +224,6 @@ export function createPlanetSystem(clients) {
     );
     pGroup.add(shell1, shell2);
 
-    // ---------- 回访光环:多段故事的星,外围一道道土星式粒子环带(光环数 = 故事数 − 1) ----------
-    // 粒子形态(哑光硬点,疏密作渐变):带心最密最亮,向内外边缘高斯衰减;
-    // 配色随星走(主色/辅色为主,掺少量金砂),远看戴环的星即"回来过的人"
-    const haloRings = [];
-    for (let ri = 0; ri < (client.rings || 0); ri++) {
-      // 土星式宽环面:自星体边缘连续铺开的一整片环,面上有细密同心纹理与一道明显暗缝,
-      // 内外边缘渐隐;纹理相位由星种子决定,每颗星的环各不相同
-      // 窄带贴星:内缘几乎贴住发光星体的视觉边缘;每道环窄,回访多了向外一道道叠加也不喧宾夺主
-      const inner = R * (0.5 + ri * 0.3);
-      const bandSpan = R * 0.22;
-      const N = 1600;   // 环是星的配饰不是主体:粒子稀一档、暗一档
-      const rpos = new Float32Array(N * 3);
-      const rcol = new Float32Array(N * 3);
-      const rrand = mulberry32(client.colorSeed * 977 + ri * 131 + 29);
-      const GOLD = [217, 192, 138];
-      const ph1 = rrand() * Math.PI * 2, ph2 = rrand() * Math.PI * 2;
-      const gapT = 0.55 + rrand() * 0.15;            // 暗缝位置(约带宽 2/3 处)
-      for (let i = 0; i < N; i++) {
-        const t = rrand();                            // 0 内缘 → 1 外缘
-        const rad = inner + t * bandSpan;
-        const a = rrand() * Math.PI * 2;
-        rpos[i * 3] = Math.cos(a) * rad;
-        rpos[i * 3 + 1] = (rrand() + rrand() - 1) * R * 0.006;   // 环面极薄
-        rpos[i * 3 + 2] = Math.sin(a) * rad;
-        // 亮度剖面:大纹路 × 细纹路 × 内外缘渐隐 × 暗缝(带窄,纹路周期相应收少)
-        const groove = (0.58 + 0.42 * Math.sin(t * Math.PI * 2 * 2.5 + ph1))
-                     * (0.7 + 0.3 * Math.sin(t * Math.PI * 2 * 8 + ph2));
-        const edge = Math.pow(Math.sin(Math.min(1, Math.max(0.001, t)) * Math.PI), 0.55);
-        const gap = 1 - 0.85 * Math.exp(-((t - gapT) * (t - gapT)) / 0.0014);
-        const b = (0.14 + rrand() * 0.22) * groove * edge * gap;
-        const pick = rrand();
-        const c = pick < 0.55 ? cp.main : (pick < 0.85 ? cp.patches[0] : GOLD);
-        rcol[i * 3] = (c[0] / 255) * b;
-        rcol[i * 3 + 1] = (c[1] / 255) * b;
-        rcol[i * 3 + 2] = (c[2] / 255) * b;
-      }
-      const rgeo = new THREE.BufferGeometry();
-      rgeo.setAttribute('position', new THREE.BufferAttribute(rpos, 3));
-      rgeo.setAttribute('color', new THREE.BufferAttribute(rcol, 3));
-      const ring = new THREE.Points(rgeo, new THREE.PointsMaterial({
-        size: 1.0, sizeAttenuation: false, vertexColors: true,
-        transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
-      }));
-      ring.frustumCulled = false;
-      pGroup.add(ring);
-      haloRings.push(ring);
-    }
-
     // 隐形拾取代理球:半径 = 星系视觉半径(D/2)× 0.6;DoubleSide 允许相机进入球内后继续命中
     const proxy = new THREE.Mesh(
       new THREE.SphereGeometry(R * 0.6, 12, 8),
@@ -289,7 +242,6 @@ export function createPlanetSystem(clients) {
       layers: { body: bodySp, halo: haloSp },
       sphere,
       shells: [shell1, shell2],
-      haloRings,
       glowBase,
       status: client.status === 'ing' ? 'ing' : 'done',  // done 满亮 / ing 未点燃(0.25)
       breathT: 3 + rand() * 2,                            // 呼吸周期 3~5s
@@ -480,7 +432,6 @@ export function createPlanetSystem(clients) {
         const match = !style || (p.data.styles ? p.data.styles.includes(style) : p.data.industry === style);
         p.dimmed = !match;
         p.layers.body.material.opacity = match ? 1 : 0.15;
-        for (const r of p.haloRings || []) r.material.opacity = match ? 1 : 0.12;
       }
     },
 

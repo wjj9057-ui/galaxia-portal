@@ -15,12 +15,13 @@ function hashSeed(str) {
 const TYPE_LABEL = { wedding: '婚礼', anniversary: '纪念日', baby: '宝宝宴', proposal: '求婚', other: '' };
 
 // 公开资料体量 → 星的大小依据(私密层不参与公开渲染,体量只按公开内容计)
+// 概念阐述按篇幅计分(封顶):资料写得越厚,星越大——贫富差就是宇宙的体量感来源
 function richnessOf(stories) {
   let r = 0;
   for (const st of stories) {
     r += 3;
     if (st.public.tagline) r += 1;
-    if (st.public.concept) r += 3;
+    if (st.public.concept) r += 2 + Math.min(6, Math.ceil(st.public.concept.length / 40));
     r += (st.public.style || []).length + (st.public.elements || []).length;
   }
   return r;

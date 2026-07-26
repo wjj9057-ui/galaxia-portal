@@ -5,7 +5,7 @@
       "id": "sys-guyi-chengnuo",
       "publicNames": "顾一 与 程诺",
       "colors": {
-        "primary": "#8B5CF6",
+        "primary": "#9D8BA8",
         "secondary": "#D9C08A"
       },
       "metAt": "2023-11-02T20:15:00+08:00",
@@ -18,8 +18,8 @@
       "id": "sys-shenhe-luwan",
       "publicNames": "沈鹤 与 陆晚",
       "colors": {
-        "primary": "#2E6F5E",
-        "secondary": "#E8C98A"
+        "primary": "#7E9A92",
+        "secondary": "#D9C08A"
       },
       "metAt": "2024-03-18T14:00:00+08:00",
       "storyIds": [
@@ -30,8 +30,8 @@
       "id": "sys-jiangxu-baitang",
       "publicNames": "江叙 与 白棠",
       "colors": {
-        "primary": "#6E87A8",
-        "secondary": "#D98868"
+        "primary": "#7A86A6",
+        "secondary": "#C98D5E"
       },
       "metAt": "2023-05-21T19:30:00+08:00",
       "storyIds": [
@@ -42,8 +42,8 @@
       "id": "sys-zhouye-xumai",
       "publicNames": "周野 与 许麦",
       "colors": {
-        "primary": "#B04A5A",
-        "secondary": "#E8B87D"
+        "primary": "#A34A35",
+        "secondary": "#D9C08A"
       },
       "metAt": "2022-12-24T21:00:00+08:00",
       "storyIds": [
@@ -54,7 +54,7 @@
       "id": "sys-chenyu-xiazhi",
       "publicNames": "陈屿 与 夏之",
       "colors": {
-        "primary": "#3E5C6B",
+        "primary": "#7A86A6",
         "secondary": "#D9A8B4"
       },
       "metAt": "2024-07-07T16:40:00+08:00",
@@ -66,7 +66,7 @@
       "id": "sys-hanqing-songzhiwei",
       "publicNames": "韩青 与 宋知微",
       "colors": {
-        "primary": "#D98868",
+        "primary": "#C98D5E",
         "secondary": "#F3E9D2"
       },
       "metAt": "2023-02-14T12:00:00+08:00",
@@ -78,8 +78,8 @@
       "id": "sys-fanghui-linjianqiu",
       "publicNames": "方回 与 林见秋",
       "colors": {
-        "primary": "#E8B87D",
-        "secondary": "#6E87A8"
+        "primary": "#D9C08A",
+        "secondary": "#7E9A92"
       },
       "metAt": "2024-10-05T18:20:00+08:00",
       "storyIds": [
@@ -90,8 +90,8 @@
       "id": "sys-tangsong-ruanmian",
       "publicNames": "唐宋 与 阮眠",
       "colors": {
-        "primary": "#D9A8B4",
-        "secondary": "#2E6F5E"
+        "primary": "#C9A0AC",
+        "secondary": "#7E9A92"
       },
       "metAt": "2022-04-30T22:10:00+08:00",
       "storyIds": [
@@ -103,8 +103,8 @@
       "id": "sys-luchuan-jiangwan",
       "publicNames": "陆川 与 江晚",
       "colors": {
-        "primary": "#B04A5A",
-        "secondary": "#D4A95A"
+        "primary": "#A34A35",
+        "secondary": "#E8B87D"
       },
       "metAt": "2023-08-12T19:45:00+08:00",
       "storyIds": [
@@ -115,7 +115,7 @@
       "id": "sys-susong-heye",
       "publicNames": "苏送 与 何叶",
       "colors": {
-        "primary": "#2E6F5E",
+        "primary": "#7E9A92",
         "secondary": "#D9A8B4"
       },
       "metAt": "2024-01-20T15:30:00+08:00",
@@ -127,7 +127,7 @@
       "id": "sys-duanmu-shenning",
       "publicNames": "段牧 与 沈宁",
       "colors": {
-        "primary": "#3E5C6B",
+        "primary": "#5E7080",
         "secondary": "#E8B87D"
       },
       "metAt": "2023-03-05T21:20:00+08:00",
@@ -139,7 +139,7 @@
       "id": "sys-jiyan-wenshu",
       "publicNames": "纪言 与 温书",
       "colors": {
-        "primary": "#8B5CF6",
+        "primary": "#9D8BA8",
         "secondary": "#F3E9D2"
       },
       "metAt": "2022-09-09T20:00:00+08:00",
@@ -152,8 +152,8 @@
       "id": "sys-chengfei-luoyin",
       "publicNames": "程飞 与 洛因",
       "colors": {
-        "primary": "#D98868",
-        "secondary": "#6E87A8"
+        "primary": "#C98D5E",
+        "secondary": "#7A86A6"
       },
       "metAt": "2024-05-17T22:40:00+08:00",
       "storyIds": [
@@ -164,8 +164,8 @@
       "id": "sys-guanshan-yueming",
       "publicNames": "关山 与 岳明",
       "colors": {
-        "primary": "#E8B87D",
-        "secondary": "#2E6F5E"
+        "primary": "#D9B07A",
+        "secondary": "#7E9A92"
       },
       "metAt": "2023-10-01T09:30:00+08:00",
       "storyIds": [
@@ -176,7 +176,7 @@
       "id": "sys-baiwu-linlang",
       "publicNames": "白雾 与 林朗",
       "colors": {
-        "primary": "#6E87A8",
+        "primary": "#8A96B0",
         "secondary": "#D9C08A"
       },
       "metAt": "2024-11-11T18:00:00+08:00",
