@@ -228,13 +228,16 @@ export function createPlanetSystem(clients) {
     // 配色随星走(主色/辅色为主,掺少量金砂),远看戴环的星即"回来过的人"
     const haloRings = [];
     for (let ri = 0; ri < (client.rings || 0); ri++) {
-      // 贴星:环从星体边缘起步;每道光环由 4 股极细环丝构成,丝间留缝(土星环的纹路感)
-      const base = R * (0.98 + ri * 0.16);
+      // 贴星:环紧贴星体;七股细环丝作"涟漪式"间距——里圈密贴,向外间距渐拉开、渐宽渐淡
+      const base = R * (0.86 + ri * 0.14);
       const STRANDS = [
-        { off: -0.055, w: 0.010, den: 0.18, br: 0.75 },
-        { off: -0.018, w: 0.013, den: 0.34, br: 1.0 },
-        { off: 0.014, w: 0.011, den: 0.30, br: 0.9 },
-        { off: 0.052, w: 0.009, den: 0.18, br: 0.65 },
+        { off: -0.036, w: 0.006, den: 0.1, br: 0.55 },
+        { off: -0.024, w: 0.007, den: 0.16, br: 0.85 },
+        { off: -0.013, w: 0.008, den: 0.22, br: 1.0 },
+        { off: -0.003, w: 0.008, den: 0.2, br: 0.95 },
+        { off: 0.009, w: 0.009, den: 0.14, br: 0.8 },
+        { off: 0.024, w: 0.01, den: 0.1, br: 0.6 },
+        { off: 0.043, w: 0.011, den: 0.08, br: 0.45 },
       ];
       const N = 1100;
       const rpos = new Float32Array(N * 3);
